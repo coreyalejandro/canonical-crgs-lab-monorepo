@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48" role="img" aria-label="Loading">
+  <style>
+    .track{fill:none;stroke:#CBBFAC;stroke-width:4;opacity:.5}
+    .arc{fill:none;stroke:#8C4E34;stroke-width:4;stroke-linecap:round;stroke-dasharray:30 200;transform-box:fill-box;transform-origin:center;animation:crgsSpin 1s linear infinite}
+    .pip{fill:#8C4E34}
+    @keyframes crgsSpin{to{transform:rotate(360deg)}}
+    @media (prefers-reduced-motion: reduce){.arc{animation:none;stroke-dasharray:60 200}}
+  </style>
+  <circle class="track" cx="24" cy="24" r="18"/>
+  <circle class="arc" cx="24" cy="24" r="18"/>
+  <circle class="pip" cx="24" cy="24" r="2.4"/>
+</svg>

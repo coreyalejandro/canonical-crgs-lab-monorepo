@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CRGS Lab — Build Brief for The Free Website Guys</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,500&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#F3EEE3;--paper-2:#FAF6EE;--ink:#1D1813;--ink-soft:#5C5147;--line:#CBBFAC;--terra:#8C4E34;--sand:#E2B583;--forest:#347A52;--kernel:#16130F;--kernel-ink:#EDE4D4;
+  --fd:"Fraunces",Georgia,serif;--fs:"Inter",system-ui,sans-serif;--fm:"JetBrains Mono",ui-monospace,Consolas,monospace}
+*{box-sizing:border-box}
+body{margin:0;font-family:var(--fs);color:var(--ink);background:var(--paper);line-height:1.6;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.wrap{max-width:880px;margin:0 auto;padding:3rem 6vw 5rem}
+.eyebrow{font-family:var(--fm);font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--terra);margin:0 0 1rem;display:flex;align-items:center;gap:.6rem}
+h1{font-family:var(--fd);font-weight:600;font-size:clamp(2rem,5vw,3rem);line-height:1.05;letter-spacing:-.01em;margin:0 0 .8rem;max-width:20ch}
+h1 em{font-style:italic;color:var(--terra)}
+.lead{font-family:var(--fd);font-style:italic;font-size:1.25rem;color:var(--ink-soft);max-width:54ch;margin:0 0 2rem}
+h2{font-family:var(--fd);font-size:1.5rem;font-weight:600;margin:2.4rem 0 1rem;padding-top:1.4rem;border-top:1px solid var(--line)}
+h3{font-family:var(--fd);font-size:1.1rem;margin:1.2rem 0 .4rem}
+p{max-width:66ch}
+.brandbar{display:flex;align-items:center;gap:.8rem;margin-bottom:2.2rem}
+.brandbar .wm{font-family:var(--fd);font-size:1.3rem;font-weight:700}
+.brandbar .wm em{font-style:italic;color:var(--terra)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1rem 0}
+.card{border:1px solid var(--line);border-radius:.8rem;background:var(--paper-2);padding:1.2rem 1.3rem}
+.card .t{font-family:var(--fm);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--terra);margin-bottom:.4rem}
+ol,ul{max-width:66ch;padding-left:1.3rem}
+ol li,ul li{margin:.35rem 0}
+table{width:100%;border-collapse:collapse;margin:1rem 0;font-size:.92rem}
+th,td{text-align:left;padding:.6rem .7rem;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--fm);font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft)}
+td code,.mono{font-family:var(--fm);font-size:.82rem;color:var(--terra)}
+.callout{background:var(--kernel);color:var(--kernel-ink);border-radius:.8rem;padding:1.3rem 1.5rem;margin:1.4rem 0;font-family:var(--fm);font-size:.84rem;line-height:1.8}
+.callout b{color:var(--sand);font-weight:500}
+.check{list-style:none;padding-left:0}
+.check li{padding-left:1.7rem;position:relative;margin:.5rem 0}
+.check li::before{content:"☐";position:absolute;left:0;color:var(--terra);font-size:1.1rem}
+.printbtn{font-family:var(--fm);font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;background:var(--ink);color:var(--paper);border:none;border-radius:.5rem;padding:.7rem 1.1rem;cursor:pointer;margin-bottom:2rem}
+.foot{font-family:var(--fm);font-size:.72rem;color:var(--ink-soft);margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--line)}
+@media print{.printbtn{display:none}.wrap{padding:0 0 1rem}body{background:#fff}h2{break-after:avoid}table,.callout,.card{break-inside:avoid}}
+@media(max-width:640px){.two{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brandbar">
+    <svg viewBox="0 0 80 80" width="40" height="40" aria-hidden="true"><g fill="#1D1813"><rect x="25" y="14.3" width="30" height="5.4" rx="2.4"/><rect x="22" y="23.5" width="36" height="5.4" rx="2.4"/><rect x="19" y="32.7" width="42" height="5.4" rx="2.4"/><rect x="17" y="41.9" width="46" height="5.4" rx="2.4"/><rect x="15" y="51.1" width="50" height="5.4" rx="2.4"/></g><rect x="13" y="60.3" width="54" height="6" rx="2.8" fill="#8C4E34"/><line x1="40" y1="10" x2="40" y2="66.3" stroke="#8C4E34" stroke-width="3.4" stroke-linecap="round"/><circle cx="40" cy="10" r="4.1" fill="#8C4E34"/><circle cx="40" cy="10" r="1.6" fill="#F3EEE3"/></svg>
+    <span class="wm">CRGS<em> Lab</em></span>
+  </div>
+
+  <p class="eyebrow">Build Brief · For The Free Website Guys</p>
+  <h1>Build this in <em>Divi</em>. The look ships with it.</h1>
+  <p class="lead">You build the structure in Divi. One stylesheet and a few code blocks carry the entire design and the interactions. This page is everything you need on one sheet.</p>
+  <button class="printbtn" onclick="window.print()">Print / Save as PDF →</button>
+
+  <h2>What this is</h2>
+  <p>A redesign of the Qi149 demo into the CRGS Lab identity, in the client's own portfolio design language. The kit gives you a high-fidelity mockup to match, an original logo, one global stylesheet, paste-in code blocks, and a deterministic step-by-step guide.</p>
+
+  <h2>Pick one build path</h2>
+  <div class="two">
+    <div class="card"><div class="t">Path A · Fastest</div><h3>Code-module path</h3><p style="margin:0">Follow <span class="mono">docs/03</span>. Content sections are pasted as Code modules. Reproduces the mockup verbatim.</p></div>
+    <div class="card"><div class="t">Path B · Editable</div><h3>Native Divi path</h3><p style="margin:0">Follow <span class="mono">docs/04</span> and also paste <span class="mono">divi-native-supplement.css</span>. Content sections become native Divi modules.</p></div>
+  </div>
+  <div class="callout"><b>Either way:</b> the three interactive pieces — the six-layer stack, the kernel status bar, and the reviewer-mode control — stay as Code modules. A page builder cannot reproduce them natively.</div>
+
+  <h2>Build order</h2>
+  <ol>
+    <li>Open <span class="mono">mockup/index.html</span> in a browser. That is the target.</li>
+    <li>Add the Google Fonts link to the page head (Divi → Theme Options → Integration).</li>
+    <li>Paste <span class="mono">global-custom-css.css</span> into Divi → Theme Options → Custom CSS.</li>
+    <li>Upload the logo (Theme Customizer) and set the favicon (Site Identity).</li>
+    <li>Build the Home sections in order, giving each its CSS ID from the manifest.</li>
+    <li>Paste the interactive code blocks into Code modules.</li>
+    <li>Build the navigation menu, publish, and set the page as the site homepage.</li>
+  </ol>
+
+  <h2>What to paste where</h2>
+  <table>
+    <tr><th>Kit file</th><th>Destination in WordPress</th></tr>
+    <tr><td><code>wordpress/global-custom-css.css</code></td><td>Theme Options → Custom CSS (one paste)</td></tr>
+    <tr><td><code>wordpress/divi-native-supplement.css</code></td><td>Same field, after the global CSS — only for Path B</td></tr>
+    <tr><td><code>code-blocks/six-layer-stack.html</code></td><td>Code module inside the section <code>Stack-Interaction-Module</code></td></tr>
+    <tr><td><code>code-blocks/kernel-status-bar.html</code></td><td>One Code module anywhere on the Home page</td></tr>
+    <tr><td><code>code-blocks/reviewer-mode.html</code></td><td>One Code module anywhere on the Home page</td></tr>
+    <tr><td><code>assets/logo/crgs-logo.svg</code></td><td>Theme Customizer → Header → logo upload</td></tr>
+    <tr><td><code>assets/favicon/favicon.svg</code></td><td>Theme Customizer → Site Identity → Site Icon</td></tr>
+    <tr><td><code>assets/social/og-card.png</code></td><td>SEO plugin → default Open Graph image</td></tr>
+  </table>
+
+  <h2>Accessibility — please keep these</h2>
+  <p>The client has specific cognitive and visual needs. These are not optional polish.</p>
+  <ul>
+    <li>Do not add flashing, strobing, autoplaying, or looping motion.</li>
+    <li>Keep the reduced-motion behavior that is already in the CSS.</li>
+    <li>Keep clear text labels on every control. Do not rely on icon-only buttons.</li>
+    <li>Keep the strong color contrast as delivered.</li>
+  </ul>
+
+  <h2>Definition of done</h2>
+  <ul class="check">
+    <li>The published Home page matches <span class="mono">mockup/index.html</span>.</li>
+    <li>The six-layer stack opens one layer at a time.</li>
+    <li>Reviewer Mode reveals a status pill on every program card.</li>
+    <li>The kernel status bar hides and returns.</li>
+    <li>The logo, favicon, and social card are installed.</li>
+    <li>Every section carries its CSS ID from the manifest.</li>
+  </ul>
+
+  <div class="foot">CRGS Lab · Constitutional Runtime Governance Systems Research Lab · CRGS-LAB-001 · Questions: see README.md and docs/01–05 in the kit.</div>
+</div>
+</body>
+</html>
