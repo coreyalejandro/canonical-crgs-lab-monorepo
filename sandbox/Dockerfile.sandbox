@@ -1,0 +1,20 @@
+# STAGE 1: Secure Math & Logic Sandbox
+FROM python:3.10-slim-bullseye
+
+# Strip unnecessary system tools to reduce attack surface
+RUN apt-get update && apt-get remove -y wget curl && apt-get autoremove -y
+
+WORKDIR /sandbox
+
+# Install deterministic execution libraries
+RUN pip install --no-cache-dir fastapi uvicorn sympy pandas numpy
+
+COPY sandbox_api.py .
+
+# Run unprivileged
+RUN useradd -m sandboxuser
+USER sandboxuser
+
+EXPOSE 8000
+
+CMD ["uvicorn", "sandbox_api:app", "--host", "0.0.0.0", "--port", "8000"]

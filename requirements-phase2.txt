@@ -1,0 +1,14 @@
+# LLM & NEURAL BINDING (Deterministic JSON parsing)
+langchain-openai==0.0.8
+langchain-community==0.0.28
+tiktoken==0.6.0
+
+# LIVE INGESTION & ETL
+PyMuPDF==1.23.21
+sentence-transformers==2.5.1
+
+# SECURE SANDBOX MICROSERVICE
+fastapi==0.110.0
+uvicorn==0.28.0
+sympy==1.12
+pandas==2.2.1

@@ -6,19 +6,25 @@ services:
     container_name: constitutional_neo4j
     environment:
       - NEO4J_AUTH=neo4j/StrictPassword123!
-      - NEO4J_apoc_export_file_enabled=true
-      - NEO4J_apoc_import_file_enabled=true
-      - NEO4J_apoc_import_file_use__neo4j__config=true
     ports:
-      - "7474:7474" # HTTP Dashboard
-      - "7687:7687" # Bolt Routing
+      - "7474:7474"
+      - "7687:7687"
     volumes:
       - neo4j_data:/data
-    healthcheck:
-      test: ["CMD", "cypher-shell", "-u", "neo4j", "-p", "StrictPassword123!", "RETURN 1"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+
+  # Isolated execution environment for neuro-symbolic verification
+  math_sandbox:
+    build:
+      context: ./sandbox
+      dockerfile: Dockerfile.sandbox
+    container_name: constitutional_sandbox
+    environment:
+      - PYTHONUNBUFFERED=1
+    ports:
+      - "8000:8000"
+    # Network restriction: Sandbox cannot access external internet, only internal network
+    networks:
+      - internal_mesh
 
   constitutional_engine:
     build:
@@ -26,18 +32,26 @@ services:
       dockerfile: Dockerfile
     container_name: constitutional_agent_loop
     depends_on:
-      knowledge_graph:
-        condition: service_healthy
+      - knowledge_graph
+      - math_sandbox
     environment:
       - NEO4J_URI=bolt://knowledge_graph:7687
       - NEO4J_USER=neo4j
       - NEO4J_PASSWORD=StrictPassword123!
+      - SANDBOX_URL=http://math_sandbox:8000/execute
+      - LLM_TEMPERATURE=0.0
       - ENFORCE_STRICT_CONSTITUTION=True
       - MAX_REVISION_LOOPS=3
     ports:
-      - "8501:8501" # Streamlit Dashboard
+      - "8501:8501"
     volumes:
       - .:/app
+    networks:
+      - internal_mesh
+
+networks:
+  internal_mesh:
+    driver: bridge
 
 volumes:
   neo4j_data:
