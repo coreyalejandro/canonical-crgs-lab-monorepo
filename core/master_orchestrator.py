@@ -44,6 +44,12 @@ from typing import TypedDict
 from langgraph.graph import StateGraph, END
 from neo4j import GraphDatabase
 
+from core.audit_ledger import ImmutableAuditLedger, secure_audit_node
+from core.commercializer import (
+    CommercialOrchestrator,
+    PriorArtConflictError,
+    commercial_blueprint_node,
+)
 from core.compiler import compile_tier1_dossier
 from core.llm_binding import get_deterministic_generator, HypothesisPayload
 from core.red_team import AdversarialVetoError, RedTeamEvaluator
@@ -77,12 +83,14 @@ class ProductionResearchState(TypedDict, total=False):
     Every node receives the full state dict and returns a (possibly mutated)
     copy.  Fields are Optional until they are written by the relevant node.
     """
-    research_query:    str         # Entry point — user's research question
-    graph_context:     list[dict]  # Claims retrieved from Neo4j
-    hypothesis_payload: dict       # HypothesisPayload fields + status
-    validation_status: str         # "verified_and_stress_tested" | "failed"
-    revision_count:    int         # Number of Red Team vetoes so far
-    final_output_path: str         # Path to compiled PDF
+    research_query:       str         # Entry point — user's research question
+    graph_context:        list[dict]  # Claims retrieved from Neo4j
+    hypothesis_payload:   dict        # HypothesisPayload fields + status
+    validation_status:    str         # "verified_and_stress_tested" | "failed" | "prior_art_conflict"
+    revision_count:       int         # Number of Red Team vetoes so far
+    audit_hash:           str         # SHA-256 fingerprint written by audit node (Phase 7)
+    commercial_blueprint: dict        # Patent claims + BOM written by commercialize node (Phase 8)
+    final_output_path:    str         # Path to compiled PDF
 
 
 # ── Database driver (module-level; shared across nodes) ───────────────────────
@@ -235,10 +243,22 @@ def compile_final_pdf(state: ProductionResearchState) -> ProductionResearchState
 
 def route_adversarial_result(state: ProductionResearchState) -> str:
     """
-    Conditional edge: route back to hypothesis generation on veto,
-    forward to PDF compilation on pass.
+    Conditional edge after red_team:
+      failed          → regenerate hypothesis
+      passed          → write audit ledger (Phase 7)
     """
     if state.get("validation_status") == "failed":
+        return "generate_hypothesis"
+    return "audit"
+
+
+def route_commercial_result(state: ProductionResearchState) -> str:
+    """
+    Conditional edge after commercialize (Phase 8):
+      prior_art_conflict → regenerate hypothesis
+      passed             → compile PDF
+    """
+    if state.get("validation_status") == "prior_art_conflict":
         return "generate_hypothesis"
     return "compile_pdf"
 
@@ -249,12 +269,24 @@ def build_orchestrator() -> StateGraph:
     """
     Assemble and compile the LangGraph state machine.
     Called once at module import — app_executor is the compiled instance.
+
+    Full pipeline (Phases 1–8):
+        query_graph
+          → generate_hypothesis
+            → red_team
+                ↙ failed: back to generate_hypothesis
+                ↘ passed: audit          (Phase 7 — cryptographic ledger)
+                            → commercialize  (Phase 8 — patent + BOM)
+                                ↙ prior_art_conflict: back to generate_hypothesis
+                                ↘ passed: compile_pdf → END
     """
     workflow = StateGraph(ProductionResearchState)
 
     workflow.add_node("query_graph",         query_live_graph)
     workflow.add_node("generate_hypothesis", generate_live_hypothesis)
     workflow.add_node("red_team",            execute_red_team_attack)
+    workflow.add_node("audit",               secure_audit_node)           # Phase 7
+    workflow.add_node("commercialize",       commercial_blueprint_node)   # Phase 8
     workflow.add_node("compile_pdf",         compile_final_pdf)
 
     workflow.set_entry_point("query_graph")
@@ -263,6 +295,15 @@ def build_orchestrator() -> StateGraph:
     workflow.add_conditional_edges(
         "red_team",
         route_adversarial_result,
+        {
+            "generate_hypothesis": "generate_hypothesis",
+            "audit":               "audit",
+        },
+    )
+    workflow.add_edge("audit", "commercialize")
+    workflow.add_conditional_edges(
+        "commercialize",
+        route_commercial_result,
         {
             "generate_hypothesis": "generate_hypothesis",
             "compile_pdf":         "compile_pdf",

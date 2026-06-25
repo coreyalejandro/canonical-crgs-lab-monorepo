@@ -1,0 +1,86 @@
+---
+# k8s/ingress-security.yaml — Zero-Trust Authentication Gateway
+#
+# Phase 7 Build Contract — Section III
+#
+# Introduces an NGINX Ingress Controller with:
+#   - Forced TLS/HTTPS redirect
+#   - JWT authentication via an auth-service sidecar
+#   - Blocks any unauthenticated request before it reaches the AI engine
+#
+# Prerequisites:
+#   1. NGINX Ingress Controller installed in cluster:
+#      kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.10.0/deploy/static/provider/aws/deploy.yaml
+#   2. cert-manager installed for TLS:
+#      kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.14.0/cert-manager.yaml
+#   3. Replace rnd.yourdomain.com with your actual domain
+#   4. Replace auth.yourdomain.com with your auth service hostname
+#
+# NOTE: The JWT_SECRET below is a TEMPLATE value. Replace with a
+# cryptographically random 256-bit hex string before production apply:
+#   python3 -c "import secrets; print(secrets.token_hex(32))"
+# ─────────────────────────────────────────────────────────────────────────────
+
+---
+# JWT signing secret — REPLACE VALUE before applying
+apiVersion: v1
+kind: Secret
+metadata:
+  name: jwt-auth-secret
+  namespace: crgs-lab
+type: Opaque
+stringData:
+  # Replace with: python3 -c "import secrets; print(secrets.token_hex(32))"
+  JWT_SECRET: "REPLACE_WITH_CRYPTOGRAPHICALLY_RANDOM_256BIT_HEX"
+
+---
+# TLS certificate via cert-manager (Let's Encrypt)
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: enterprise-tls-cert
+  namespace: crgs-lab
+spec:
+  secretName: enterprise-tls-cert
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  dnsNames:
+  - rnd.yourdomain.com
+
+---
+# Secure NGINX Ingress — JWT-authenticated, TLS-forced
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: constitutional-api-gateway
+  namespace: crgs-lab
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    # Force HTTPS — reject all plain HTTP
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    # JWT validation: every request hits the auth service first
+    nginx.ingress.kubernetes.io/auth-url: "http://auth-service.crgs-lab.svc.cluster.local/validate"
+    nginx.ingress.kubernetes.io/auth-signin: "https://auth.yourdomain.com/login"
+    # Rate limiting — protect against API key abuse
+    nginx.ingress.kubernetes.io/limit-rps: "10"
+    nginx.ingress.kubernetes.io/limit-connections: "5"
+    # CORS — restrict to your domain only
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/cors-allow-origin: "https://rnd.yourdomain.com"
+spec:
+  tls:
+  - hosts:
+    - rnd.yourdomain.com
+    secretName: enterprise-tls-cert
+  rules:
+  - host: rnd.yourdomain.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: constitutional-engine-service
+            port:
+              number: 8501

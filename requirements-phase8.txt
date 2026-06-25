@@ -1,0 +1,4 @@
+# PATENT AND SUPPLY CHAIN DATA BINDING
+google-search-results==2.4.2
+beautifulsoup4==4.12.3
+requests==2.31.0

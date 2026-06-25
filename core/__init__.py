@@ -1,7 +1,7 @@
 """
 core/__init__.py — Constitutional Engine Core Package
 
-Exposes the primary entry points for Phases 2–5:
+Exposes the primary entry points for Phases 2–8:
   - get_deterministic_generator  (llm_binding)
   - HypothesisPayload            (llm_binding)
   - ingest_pdfs                  (ingest_pdfs)
@@ -15,6 +15,11 @@ Exposes the primary entry points for Phases 2–5:
   - ProductionResearchState      (master_orchestrator)
   - ConstitutionalLoopError      (master_orchestrator)
   - build_orchestrator           (master_orchestrator)
+  - ImmutableAuditLedger         (audit_ledger)         Phase 7
+  - secure_audit_node            (audit_ledger)         Phase 7
+  - CommercialOrchestrator       (commercializer)       Phase 8
+  - PriorArtConflictError        (commercializer)       Phase 8
+  - commercial_blueprint_node    (commercializer)       Phase 8
 """
 
 from core.llm_binding import get_deterministic_generator, HypothesisPayload
@@ -27,6 +32,12 @@ from core.master_orchestrator import (
     ProductionResearchState,
     ConstitutionalLoopError,
     build_orchestrator,
+)
+from core.audit_ledger import ImmutableAuditLedger, secure_audit_node
+from core.commercializer import (
+    CommercialOrchestrator,
+    PriorArtConflictError,
+    commercial_blueprint_node,
 )
 
 __all__ = [
@@ -43,4 +54,9 @@ __all__ = [
     "ProductionResearchState",
     "ConstitutionalLoopError",
     "build_orchestrator",
+    "ImmutableAuditLedger",
+    "secure_audit_node",
+    "CommercialOrchestrator",
+    "PriorArtConflictError",
+    "commercial_blueprint_node",
 ]
