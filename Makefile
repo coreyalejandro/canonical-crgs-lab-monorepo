@@ -6,7 +6,8 @@
         deploy-audit-ledger enforce-zero-trust execute-phase-7 \
         deploy-commercialization execute-phase-8 \
         deploy-cyber-physical execute-phase-9 \
-        deploy-regulatory execute-phase-10
+        deploy-regulatory execute-phase-10 \
+        install-phase11 run-tui run-webui execute-phase-11
 
 # Strict abort on any command failure
 .SHELLFLAGS = -ec

@@ -1,0 +1,7 @@
+{
+  "enclosure_length_mm": 120.0,
+  "enclosure_width_mm": 60.0,
+  "wall_thickness_mm": 2.5,
+  "enclosure_height_mm": 20.0,
+  "note": "cadquery not installed \u2014 import params for manual CAD entry"
+}

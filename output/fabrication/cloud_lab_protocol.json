@@ -1,0 +1,20 @@
+{
+    "protocol_version": "1.0",
+    "protocol_type": "material_synthesis",
+    "source": "CRGS Lab Constitutional AI Pipeline \u2014 Phase 9",
+    "patent_claims_hash": "9359a3ca9dc787b8",
+    "target_material": {
+        "silicon-carbide doped graphene": 1
+    },
+    "mixing_ratio_v_v": {
+        "graphene_oxide": 0.95,
+        "silicon_carbide": 0.05
+    },
+    "thermal_baking_celsius": 180,
+    "duration_minutes": 120,
+    "bom_components": [],
+    "estimated_cost_usd": 0,
+    "supply_chain_risks": [
+        "BOM generation returned invalid JSON: Expecting value: line 1 column 1 (char 0)\nRaw output: content='{\\n  \"components\": [\\n    {\\n      \"name\": \"Core AI Substrate (Governed System)\",\\n      \"quantity\": 1,\\n      \"unit\": \"Unit\",\\n      \"estimated_unit_cost_usd\": 950000.00\\n    },\\n    {\\n    "
+    ]
+}

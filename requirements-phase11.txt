@@ -1,0 +1,7 @@
+# ── PHASE 11: OMNI-CHANNEL INTERFACE ─────────────────────────────────────────
+# Enterprise TUI Framework — split-pane terminal command center
+textual==0.89.1
+rich==13.9.4
+
+# Reactive Multi-Agent Web UI — native LangGraph streaming with thought steps
+chainlit==2.5.5

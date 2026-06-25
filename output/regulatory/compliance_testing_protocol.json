@@ -1,0 +1,62 @@
+{
+    "applicable_standards": [
+        {
+            "standard": "ISO 9001:2015",
+            "body": "ISO",
+            "scope": "Quality management \u2014 baseline for all manufactured products"
+        },
+        {
+            "standard": "CE Marking",
+            "body": "EU Commission",
+            "scope": "EU market entry \u2014 mandatory for all electronic/physical products"
+        },
+        {
+            "standard": "FCC Part 15",
+            "body": "FCC",
+            "scope": "RF emissions \u2014 required for all electronic devices sold in the US"
+        },
+        {
+            "standard": "RoHS 3 (2015/863/EU)",
+            "body": "EU",
+            "scope": "Hazardous substance restriction for EU/UK market entry"
+        }
+    ],
+    "testing_protocols": [
+        {
+            "test_name": "ISO 9001 QMS Audit",
+            "standard_ref": "ISO 9001:2015",
+            "estimated_cost_usd": 5000,
+            "estimated_weeks": 4
+        },
+        {
+            "test_name": "FCC Part 15 RF Emissions",
+            "standard_ref": "47 CFR Part 15",
+            "estimated_cost_usd": 8000,
+            "estimated_weeks": 6
+        },
+        {
+            "test_name": "CE Technical File + Declaration of Conformity",
+            "standard_ref": "EU 2019/1782",
+            "estimated_cost_usd": 12000,
+            "estimated_weeks": 8
+        },
+        {
+            "test_name": "RoHS Material Analysis",
+            "standard_ref": "EU 2015/863",
+            "estimated_cost_usd": 3000,
+            "estimated_weeks": 3
+        }
+    ],
+    "market_entry_sequence": [
+        "1. Complete ISO 9001 QMS audit and correct non-conformances",
+        "2. Submit prototype for FCC Part 15 RF emissions testing",
+        "3. Prepare CE Technical File and Declaration of Conformity",
+        "4. Commission RoHS material analysis from accredited lab",
+        "5. Compile regulatory dossier and engage notified body if required",
+        "6. File for market authorization and register product"
+    ],
+    "estimated_total_compliance_cost_usd": 28000,
+    "estimated_total_weeks": 16,
+    "_fallback": true,
+    "_fallback_reason": "Expecting value: line 1 column 1 (char 0)"
+}

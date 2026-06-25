@@ -115,18 +115,19 @@ def compile_tier1_dossier(
     print("[compiler] Commanding PDF compilation microservice...")
 
     # 1. Local tectonic binary (fastest, no Docker required)
+    # Pass absolute path; tectonic writes the PDF next to the .tex file.
     tectonic_bin = shutil.which("tectonic")
     if tectonic_bin:
         try:
             subprocess.run(
-                [tectonic_bin, str(tex_path)],
-                cwd=OUTPUT_DIR,
+                [tectonic_bin, str(tex_path.resolve())],
                 check=True,
+                capture_output=True,
             )
             print(f"[compiler] Tier-1 PDF generated (local tectonic) → {pdf_path}")
             return pdf_path
         except subprocess.CalledProcessError as exc:
-            print(f"[compiler] Local tectonic failed: {exc}")
+            print(f"[compiler] Local tectonic failed: {exc.stderr.decode()[:200] if exc.stderr else exc}")
 
     # 2. Docker container (enterprise / CI)
     try:

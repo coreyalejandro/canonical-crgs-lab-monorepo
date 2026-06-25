@@ -44,7 +44,7 @@ LM_STUDIO_URL     = os.getenv("LM_STUDIO_BASE_URL", "http://localhost:1234/v1")
 OLLAMA_URL        = os.getenv("OLLAMA_BASE_URL",    "http://localhost:11434/v1")
 
 # Model names — override via env vars if you load different models in LM Studio
-LM_STUDIO_MODEL   = os.getenv("LM_STUDIO_MODEL",   "google/gemma-4-e4b")
+LM_STUDIO_MODEL   = os.getenv("LM_STUDIO_MODEL",   "openai/gpt-oss-20b")
 OLLAMA_MODEL      = os.getenv("OLLAMA_MODEL",       "qwen2.5:7b")
 OPENAI_MODEL      = os.getenv("OPENAI_MODEL",       "gpt-4o")
 
