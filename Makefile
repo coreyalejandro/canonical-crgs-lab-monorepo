@@ -1,12 +1,12 @@
 .PHONY: all clean build init verify verify-sandbox verify-etl run \
         execute-phase-1 execute-phase-2 execute-phase-3 \
         compile-dossier compile-dossier-run \
-        execute-ingestion
+        execute-ingestion execute-autonomous-run
 
 # Strict abort on any command failure
 .SHELLFLAGS = -ec
 
-all: execute-ingestion
+all: execute-autonomous-run
 
 # ── SHARED ────────────────────────────────────────────────────────────────────
 
@@ -99,3 +99,10 @@ execute-ingestion: verify-etl
 	@echo "Initializing Autonomous ETL Data Extraction..."
 	docker-compose run --rm constitutional_engine python core/ingest_arxiv.py
 	@echo "Neo4j Knowledge Graph is now loaded with live, structurally mapped facts."
+
+# ── PHASE 5 ───────────────────────────────────────────────────────────────────
+
+execute-autonomous-run: verify-etl
+	@echo "Initiating Full-System Master Orchestrator..."
+	docker-compose run --rm constitutional_engine python core/master_orchestrator.py
+	@echo "Tier-1 PDF successfully generated in the /output directory."
