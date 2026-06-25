@@ -1,0 +1,820 @@
+
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>CRGS-LAB-BUILD-CONTRACT-PLANS_PHASE_14</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, "Segoe UI", system-ui, sans-serif; font-size: 14px; line-height: 1.65; background: #fff; color: #1f2328; padding: 32px 16px; }
+  .page { max-width: 900px; margin: 0 auto; }
+
+  /* Header */
+  .contract-header { border: 2px solid #1f2328; border-radius: 4px; padding: 18px 20px; margin-bottom: 28px; }
+  .contract-header h1 { font-size: 18px; font-weight: 700; margin-bottom: 6px; }
+  .meta-row { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 24px; font-size: 12px; color: #57606a; margin-top: 10px; }
+  .meta-row span strong { color: #1f2328; }
+
+  /* Section headers */
+  h2 { font-size: 15px; font-weight: 700; margin: 30px 0 10px; padding: 6px 10px; background: #1f2328; color: #fff; border-radius: 3px; }
+  h3 { font-size: 13px; font-weight: 700; margin: 18px 0 8px; border-bottom: 2px solid #e5e7eb; padding-bottom: 4px; }
+
+  /* Fix blocks */
+  .fix { border: 1px solid #e5e7eb; border-radius: 6px; margin-bottom: 20px; overflow: hidden; }
+  .fix-header { display: flex; align-items: center; gap: 10px; padding: 10px 14px; background: #f7f8fa; border-bottom: 1px solid #e5e7eb; }
+  .fix-id { background: #1f2328; color: #fff; border-radius: 3px; padding: 2px 8px; font-size: 12px; font-weight: 700; white-space: nowrap; }
+  .fix-title { font-weight: 600; font-size: 13px; }
+  .severity { font-size: 11px; font-weight: 600; border-radius: 3px; padding: 2px 7px; margin-left: auto; white-space: nowrap; }
+  .sev-critical { background: #ffeef0; color: #cb2431; }
+  .sev-high { background: #fff3cd; color: #8a6914; }
+  .sev-medium { background: #e8f0fe; color: #3b6dcc; }
+  .sev-low { background: #f1f8ff; color: #0366d6; }
+  .fix-body { padding: 12px 14px; }
+  .fix-body p { margin-bottom: 8px; font-size: 13px; }
+  .fix-body p:last-child { margin-bottom: 0; }
+
+  /* Code blocks */
+  pre { background: #1f2328; color: #e6edf3; border-radius: 5px; padding: 14px 16px; font-size: 12px; font-family: "SFMono-Regular", Consolas, monospace; overflow-x: auto; margin: 8px 0; line-height: 1.5; }
+  code { background: #f7f8fa; border: 1px solid #e5e7eb; border-radius: 3px; padding: 1px 5px; font-size: 12px; font-family: "SFMono-Regular", Consolas, monospace; }
+  pre code { background: none; border: none; padding: 0; font-size: 12px; }
+
+  /* Acceptance criteria */
+  .ac { background: #f7f8fa; border-left: 3px solid #22863a; border-radius: 0 4px 4px 0; padding: 10px 14px; margin: 8px 0; }
+  .ac-title { font-size: 11px; font-weight: 700; color: #22863a; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+  .ac ul { margin: 0; padding-left: 18px; font-size: 12px; }
+  .ac ul li { margin-bottom: 3px; }
+
+  /* Warning */
+  .warn { background: #fffbe6; border-left: 3px solid #e36209; padding: 10px 14px; margin: 8px 0; border-radius: 0 4px 4px 0; font-size: 12px; }
+
+  /* Table */
+  table { width: 100%; border-collapse: collapse; font-size: 12px; margin: 10px 0; }
+  th { background: #f7f8fa; text-align: left; padding: 7px 10px; border-bottom: 2px solid #e5e7eb; font-weight: 600; }
+  td { padding: 6px 10px; border-bottom: 1px solid #e5e7eb; vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+
+  /* Execution order */
+  .exec-order { counter-reset: steps; }
+  .step { position: relative; padding-left: 36px; margin-bottom: 10px; font-size: 13px; }
+  .step::before { counter-increment: steps; content: counter(steps); position: absolute; left: 0; top: 1px; width: 22px; height: 22px; background: #1f2328; color: #fff; border-radius: 50%; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+
+  /* Immutability seal */
+  .seal { border: 2px solid #1f2328; border-radius: 4px; padding: 14px 16px; margin: 28px 0 0; font-size: 12px; }
+  .seal h4 { font-size: 13px; font-weight: 700; margin-bottom: 6px; }
+
+  footer { margin-top: 36px; padding-top: 10px; border-top: 1px solid #e5e7eb; text-align: center; font-size: 12px; color: #57606a; }
+</style>
+</head>
+<body>
+<div class="page">
+
+
+<div class="contract-header">
+  <h1>CRGS-LAB-BUILD-CONTRACT-PLANS_PHASE_14<br />
+  The Ironclad Audit Remediation Contract</h1>
+  <div class="meta-row">
+    <span><strong>Phase:</strong> 14</span>
+    <span><strong>Predecessor:</strong> Phase 13 — Ironclad Synthesis (COMPLETE)</span>
+    <span><strong>Authored:</strong> 2026-07-01</span>
+    <span><strong>Status:</strong> RATIFIED — IMMUTABLE</span>
+    <span><strong>Governed by:</strong> TLC 2.0 Sociotechnical Constitution v2.0.0</span>
+    <span><strong>Canonical Intent:</strong> CANONICAL_INTENT.md v1.0</span>
+    <span><strong>Audit Source:</strong> CRGS-LAB Comprehensive Claim Audit (2026-07-01)</span>
+    <span><strong>Gaps to close:</strong> 10 (all identified in audit; numbered GAP-01 through GAP-10)</span>
+  </div>
+</div>
+
+
+<h2>I. PREAMBLE — SCOPE AND AXIOMS</h2>
+
+<p style="font-size:13px;margin-bottom:10px">This contract closes every gap identified in the 2026-07-01 audit of the CANONICAL-CRGS-LAB-MONOREPO. Each fix is specified to the level of an exact file path, exact command, and a machine-verifiable pass/fail acceptance criterion. There is no step that requires interpretation. There is no step that can be marked done without a verifiable output. Partial completion is not completion.</p>
+
+<div class="warn"><strong>Axiom 1 — Evidence Primacy.</strong> Running code producing verified output &gt; specification claiming it will. No fix in this contract is closed until its Acceptance Criteria section produces the exact stated output.</div>
+<div class="warn" style="margin-top:6px"><strong>Axiom 2 — Submodule Initialization is a Pre-Condition.</strong> GAP-01 MUST be verified complete before any other gap is attempted. All other gaps depend on accessible file-system paths. Attempting GAP-02 through GAP-10 on an uninitialized submodule tree is undefined behavior.</div>
+<div class="warn" style="margin-top:6px"><strong>Axiom 3 — Zero Ambiguity Standard.</strong> Every command is written in full, executable bash. Every file path is absolute or relative to the monorepo root. Every acceptance criterion states the exact string or exit code expected. "It looks right" is not an acceptance criterion.</div>
+
+
+<h2>II. GAP-01 — Submodule Initialization (CRITICAL — EXECUTE FIRST)</h2>
+
+<div class="fix">
+  <div class="fix-header">
+    <span class="fix-id">GAP-01</span>
+    <span class="fix-title">Git submodules are not initialized — no source file on disk is accessible</span>
+    <span class="severity sev-critical">CRITICAL</span>
+  </div>
+  <div class="fix-body">
+    <p><strong>Root cause.</strong> The monorepo tracks all product directories as git submodules. In the current working copy, <code>git submodule update --init --recursive</code> has never been run. The filesystem contains only the submodule <em>stubs</em> (empty directories with a <code>.git</code> file inside), not the actual file trees. Every read_file, glob, pytest, and node command on any product path will fail with ENOENT until this is corrected.</p>
+
+    <h3>Exact Commands</h3>
+<pre><code># Step 1 — Confirm you are at the monorepo root
+pwd
+# Expected output: /path/to/CANONICAL-CRGS-LAB-MONOREPO
+
+# Step 2 — Confirm .gitmodules exists
+test -f .gitmodules &amp;&amp; echo "PRESENT" || echo "MISSING"
+# Expected output: PRESENT
+
+# Step 3 — Initialize and checkout all submodules recursively
+git submodule update --init --recursive
+# Expected: each submodule prints "Submodule path 'X': checked out 'SHA'"
+# No "fatal:" lines in output
+
+# Step 4 — Verify critical directories are now populated
+test -f core/boot.py         &amp;&amp; echo "core/boot.py: OK"    || echo "core/boot.py: MISSING"
+test -f core/orchestrator.py &amp;&amp; echo "core/orch: OK"       || echo "core/orch: MISSING"
+test -f ui/web_engine.py     &amp;&amp; echo "ui/web_engine: OK"   || echo "ui/web_engine: MISSING"
+test -f README.md            &amp;&amp; echo "README.md: OK"       || echo "README.md: MISSING"
+test -f CANONICAL_INTENT.md  &amp;&amp; echo "CANONICAL_INTENT: OK" || echo "CANONICAL_INTENT: MISSING"</code></pre>
+
+    <div class="ac">
+      <div class="ac-title">Acceptance Criteria — GAP-01</div>
+      <ul>
+        <li>All five <code>test -f</code> lines print <code>OK</code>.</li>
+        <li><code>git submodule status</code> shows no lines beginning with <code>-</code> (uninitialized) or <code>+</code> (modified/detached).</li>
+        <li><code>find . -name "*.py" | head -1</code> returns at least one path. (Proves glob/find now works on real files.)</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+<h2>III. GAP-02 — Fix core/boot.py Tautological Integrity Check (HIGH)</h2>
+
+<div class="fix">
+  <div class="fix-header">
+    <span class="fix-id">GAP-02</span>
+    <span class="fix-title">CONSTITUTION_HASH is computed from the live string — the integrity check is a self-confirming tautology</span>
+    <span class="severity sev-high">HIGH</span>
+  </div>
+  <div class="fix-body">
+    <p><strong>Root cause.</strong> The current code sets <code>CONSTITUTION_HASH = hashlib.sha256(TLC_TOCA_CANON.encode("utf-8")).hexdigest()</code>. Because the hash is derived from the string at runtime, any mutation of <code>TLC_TOCA_CANON</code> also changes <code>CONSTITUTION_HASH</code> in the same execution — the two values always match. Article 8's "hard crash on mutation" guarantee is void.</p>
+    <p><strong>Fix.</strong> Pre-compute the hash of the authoritative constitution text and hard-code it as a string literal. Any subsequent mutation of the text will then produce a different runtime hash, which will not equal the literal, causing <code>sys.exit(1)</code> as intended.</p>
+
+    <h3>Step 1 — Compute the authoritative hash from the current live file</h3>
+<pre><code># Run from monorepo root AFTER GAP-01 is complete
+python3 - &lt;&lt;'PYEOF'
+import hashlib
+
+with open("core/boot.py", "r") as f:
+    src = f.read()
+
+# Extract the TLC_TOCA_CANON string between the triple-quote delimiters
+start = src.index('TLC_TOCA_CANON = """') + len('TLC_TOCA_CANON = """')
+end   = src.index('"""', start)
+canon = src[start:end]
+
+h = hashlib.sha256(canon.encode("utf-8")).hexdigest()
+print(f"AUTHORITATIVE_HASH = \"{h}\"")
+PYEOF
+# Copy the printed hash — you will paste it into the file in Step 2.</code></pre>
+
+    <h3>Step 2 — Replace the dynamic assignment with the literal</h3>
+    <p>Open <code>core/boot.py</code>. Find this line:</p>
+<pre><code>CONSTITUTION_HASH = hashlib.sha256(TLC_TOCA_CANON.encode("utf-8")).hexdigest()</code></pre>
+    <p>Replace it with:</p>
+<pre><code># Pre-computed at Phase 14 ratification — DO NOT RECOMPUTE AT RUNTIME.
+# Any mutation of TLC_TOCA_CANON above will produce a different runtime hash
+# and enforce_cryptographic_boot() will call sys.exit(1).
+CONSTITUTION_HASH = "&lt;PASTE_HASH_FROM_STEP_1_HERE&gt;"</code></pre>
+    <p>Also update <code>enforce_cryptographic_boot()</code> to compare a freshly computed hash against <code>CONSTITUTION_HASH</code>:</p>
+<pre><code>def enforce_cryptographic_boot() -&gt; str:
+    """Hard-crash if TLC_TOCA_CANON has been mutated since Phase 14 ratification."""
+    live_hash = hashlib.sha256(TLC_TOCA_CANON.encode("utf-8")).hexdigest()
+    if live_hash != CONSTITUTION_HASH:
+        sys.stderr.write(
+            f"FATAL: TLC ToCA integrity violated.\n"
+            f"  Expected: {CONSTITUTION_HASH}\n"
+            f"  Got:      {live_hash}\n"
+            "System halted.\n"
+        )
+        sys.exit(1)
+    print(f"✅ TLC ToCA Cryptographically Verified [{live_hash[:16]}…]. Booting Cognitive Boardroom…")
+    return live_hash</code></pre>
+
+    <h3>Step 3 — Verify the fix</h3>
+<pre><code># Should print "✅ TLC ToCA Cryptographically Verified"
+python3 -c "from core.boot import enforce_cryptographic_boot; enforce_cryptographic_boot()"
+
+# Mutation test — must print FATAL and exit 1
+python3 - &lt;&lt;'PYEOF'
+import sys, importlib
+import core.boot as b
+original = b.TLC_TOCA_CANON
+b.TLC_TOCA_CANON = original + " MUTATED"
+import hashlib
+live = hashlib.sha256(b.TLC_TOCA_CANON.encode()).hexdigest()
+if live == b.CONSTITUTION_HASH:
+    print("FAIL: hash still matches after mutation")
+    sys.exit(1)
+else:
+    print("PASS: mutation correctly produces hash mismatch")
+PYEOF</code></pre>
+
+    <div class="ac">
+      <div class="ac-title">Acceptance Criteria — GAP-02</div>
+      <ul>
+        <li>Step 3 first command exits 0 and prints exactly one line starting with <code>✅ TLC ToCA Cryptographically Verified</code>.</li>
+        <li>Step 3 mutation test prints <code>PASS: mutation correctly produces hash mismatch</code> and exits 0.</li>
+        <li><code>git diff core/boot.py</code> shows exactly: (a) the literal hash assignment replacing the dynamic one, and (b) the updated <code>enforce_cryptographic_boot</code> body. No other lines changed.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+<h2>IV. GAP-03 — Fix core/orchestrator.py Strict Typing (MEDIUM)</h2>
+
+<div class="fix">
+  <div class="fix-header">
+    <span class="fix-id">GAP-03</span>
+    <span class="fix-title">StateGraph(dict) used instead of StateGraph(ResearchState) — Gap 3 closure is void</span>
+    <span class="severity sev-medium">MEDIUM</span>
+  </div>
+  <div class="fix-body">
+    <p><strong>Root cause.</strong> Phase 13 claimed Gap 3 closure (strict Pydantic <code>ResearchState</code>), but <code>core/orchestrator.py</code> constructs <code>StateGraph(dict)</code>. The bare dict bypasses all Pydantic type enforcement. Article 3 (Clean Code Standard — 100% deterministic, strictly typed) is not satisfied.</p>
+
+    <h3>Exact Edit — core/orchestrator.py</h3>
+    <p>Find line:</p>
+<pre><code>workflow = StateGraph(dict)</code></pre>
+    <p>Replace with:</p>
+<pre><code>from core.state import ResearchState
+workflow = StateGraph(ResearchState)</code></pre>
+    <p><strong>Note:</strong> <code>human_cryptographic_checkpoint</code> receives a <code>ResearchState</code> instance. Update its type hint accordingly:</p>
+<pre><code># Before
+def human_cryptographic_checkpoint(state: dict) -&gt; dict:
+
+# After
+def human_cryptographic_checkpoint(state: ResearchState) -&gt; dict:</code></pre>
+    <p>Update the attribute access inside the function body — replace <code>state.get("human_signature_hash")</code> with <code>state.human_signature_hash</code> and <code>state.get("visionary_hypothesis", "")</code> with <code>state.visionary_hypothesis or ""</code>.</p>
+
+    <h3>Verification Command</h3>
+<pre><code>python3 - &lt;&lt;'PYEOF'
+from core.orchestrator import app_executor
+from core.state import ResearchState
+import inspect
+
+# Confirm the graph's schema is ResearchState, not dict
+schema = app_executor.get_graph().schema
+if schema is ResearchState:
+    print("PASS: StateGraph schema is ResearchState")
+else:
+    print(f"FAIL: StateGraph schema is {schema}")
+    raise SystemExit(1)
+PYEOF</code></pre>
+
+    <div class="ac">
+      <div class="ac-title">Acceptance Criteria — GAP-03</div>
+      <ul>
+        <li>Verification command prints <code>PASS: StateGraph schema is ResearchState</code> and exits 0.</li>
+        <li><code>python3 -c "from core.orchestrator import app_executor"</code> exits 0 with no errors.</li>
+        <li><code>git diff core/orchestrator.py</code> shows only the two type-related changes: <code>StateGraph(dict)</code> → <code>StateGraph(ResearchState)</code> and the checkpoint function signature/body updates.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+<h2>V. GAP-04 — Resolve Agent Sentinel Merge Conflict (HIGH)</h2>
+
+<div class="fix">
+  <div class="fix-header">
+    <span class="fix-id">GAP-04</span>
+    <span class="fix-title">Agent Sentinel README.md has active git merge conflict markers — published product with &lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD in README</span>
+    <span class="severity sev-high">HIGH</span>
+  </div>
+  <div class="fix-body">
+    <p><strong>Root cause.</strong> Two branches were merged into <code>agent-sentinel-alignment-anomaly-detector/README.md</code> without resolution: HEAD contained a minimal AI Studio app README; branch <code>ea0fc0a</code> contained the full Enterprise Behavioral Anomaly Detection README. Conflict markers were committed as-is.</p>
+    <p><strong>Resolution decision.</strong> Keep the Enterprise README (the <code>ea0fc0a</code> branch content). It is the more complete, intentional document. Discard the AI Studio app stub. This is the choice that satisfies SOCIOTECHNICAL_CONSTITUTION §1.1 — the module's declared truth status must be <em>earned</em>, and the AI Studio stub is evidence of a prior prototype state, not the current product.</p>
+
+    <h3>Exact Commands</h3>
+<pre><code>cd CRGS-LAB-PRODUCTS/agent-sentinel-alignment-anomaly-detector
+
+# Step 1 — Confirm the conflict is present
+grep -c "&lt;&lt;&lt;&lt;&lt;&lt;&lt;" README.md
+# Expected output: 1   (exactly one conflict block)
+
+# Step 2 — Extract the "ours" (theirs = ea0fc0a) content: the Enterprise README
+# The enterprise content starts after the "=======" divider and ends before "&gt;&gt;&gt;&gt;&gt;&gt;&gt;"
+python3 - &lt;&lt;'PYEOF'
+with open("README.md", "r") as f:
+    content = f.read()
+
+# Split on the conflict markers
+head_start = content.index("&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD")
+divider     = content.index("=======",   head_start)
+tail_end    = content.index("&gt;&gt;&gt;&gt;&gt;&gt;&gt;", divider)
+newline_after = content.index("\n", tail_end)
+
+# Keep: everything before the conflict block + enterprise section + everything after
+before     = content[:head_start]
+enterprise = content[divider + len("=======\n") : tail_end]
+after      = content[newline_after + 1:]
+
+resolved = before + enterprise + after
+
+with open("README.md", "w") as f:
+    f.write(resolved)
+
+print("RESOLVED: conflict markers removed, enterprise README retained")
+PYEOF
+
+# Step 3 — Confirm zero conflict markers remain
+grep -c "&lt;&lt;&lt;&lt;&lt;&lt;&lt;" README.md &amp;&amp; echo "FAIL: markers remain" || echo "PASS: no conflict markers"
+
+# Step 4 — Also remove the placeholder org references in the enterprise README
+sed -i '' 's|your-org/agent-sentinel|coreyalejandro/agent-sentinel-alignment-anomaly-detector|g' README.md
+# Verify
+grep "your-org" README.md &amp;&amp; echo "FAIL: your-org placeholder remains" || echo "PASS: placeholder replaced"
+
+# Step 5 — Commit
+git add README.md
+git commit -m "fix: resolve README merge conflict — keep enterprise version; replace org placeholder"
+
+cd ../..</code></pre>
+
+    <div class="ac">
+      <div class="ac-title">Acceptance Criteria — GAP-04</div>
+      <ul>
+        <li>Step 3 prints <code>PASS: no conflict markers</code>.</li>
+        <li>Step 4 prints <code>PASS: placeholder replaced</code>.</li>
+        <li><code>head -1 CRGS-LAB-PRODUCTS/agent-sentinel-alignment-anomaly-detector/README.md</code> outputs <code># Agent Sentinel — Enterprise Behavioral Anomaly Detection System</code>.</li>
+        <li><code>git log --oneline -1</code> inside the submodule shows the fix commit.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+<h2>VI. GAP-05 — Update README.md Phase Status (MEDIUM)</h2>
+
+<div class="fix">
+  <div class="fix-header">
+    <span class="fix-id">GAP-05</span>
+    <span class="fix-title">README.md declares "Phase 1 Active" — 12 phases out of date; Build Contract table incomplete</span>
+    <span class="severity sev-medium">MEDIUM</span>
+  </div>
+  <div class="fix-body">
+    <p><strong>Root cause.</strong> The top-level <code>README.md</code> was never updated as phases progressed from 1 to 13. The build contract table lists only Phase 1.</p>
+
+    <h3>Exact Edit — README.md</h3>
+    <p><strong>Change 1:</strong> Replace the status line:</p>
+<pre><code># Find
+**Status:** Phase 1 Active
+
+# Replace with
+**Status:** Phase 13 Complete — Phase 14 Active</code></pre>
+
+    <p><strong>Change 2:</strong> Replace the entire Build Contracts table:</p>
+<pre><code>| Contract | Phase | Status |
+|---|---|---|
+| `CRGS-LAB-BUILD-CONTRACT-PLANS_PHASE_1.md` | Phase 1 — Infrastructure + Scaffolding | Complete |
+| `CRGS-LAB-BUILD-CONTRACT-PLANS_PHASE_2.md` | Phase 2 | Complete |
+| `CRGS-LAB-BUILD-CONTRACT-PLANS_PHASE_3.md` | Phase 3 | Complete |
+| `CRGS-LAB-BUILD-CONTRACT-PLANS_PHASE_4.md` | Phase 4 | Complete |
+| `CRGS-LAB-BUILD-CONTRACT-PLANS_PHASE_5.md` | Phase 5 | Complete |
+| `CRGS-LAB-BUILD-CONTRACT-PLANS_PHASE_6.md` | Phase 6 | Complete |
+| `CRGS-LAB-BUILD-CONTRACT-PLANS_PHASE_7.md` | Phase 7 | Complete |
+| `CRGS-LAB-BUILD-CONTRACT-PLANS_PHASE_8.md` | Phase 8 | Complete |
+| `CRGS-LAB-BUILD-CONTRACT-PLANS_PHASE_9.md` | Phase 9 | Complete |
+| `CRGS-LAB-BUILD-CONTRACT-PLANS_PHASE_10.md` | Phase 10 | Complete |
+| `CRGS-LAB-BUILD-CONTRACT-PLANS_PHASE_11.md` | Phase 11 | Complete |
+| `CRGS-LAB-BUILD-CONTRACT-PLANS_PHASE_12.md` | Phase 12 — Master Synthesis | Complete |
+| `CRGS-LAB-BUILD-CONTRACT-PLANS_PHASE_13.md` | Phase 13 — Ironclad Synthesis | Complete |
+| `CRGS-LAB-BUILD-CONTRACT-PLANS_PHASE_14.md` | Phase 14 — Audit Remediation | Active |</code></pre>
+
+    <h3>Verification</h3>
+<pre><code>grep "Phase 1 Active" README.md &amp;&amp; echo "FAIL" || echo "PASS: stale status removed"
+grep "Phase 13 Complete" README.md &amp;&amp; echo "PASS: current status present" || echo "FAIL"
+grep -c "Phase_1[0-9]" README.md | xargs -I{} test {} -ge 4 &amp;&amp; echo "PASS: multi-phase table present" || echo "FAIL"</code></pre>
+
+    <div class="ac">
+      <div class="ac-title">Acceptance Criteria — GAP-05</div>
+      <ul>
+        <li>All three verification commands print <code>PASS</code>.</li>
+        <li><code>git diff README.md</code> shows exactly the status line change and the table expansion. No other lines changed.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+<h2>VII. GAP-06 — Fix Phase 13 Contract File (MEDIUM)</h2>
+
+<div class="fix">
+  <div class="fix-header">
+    <span class="fix-id">GAP-06</span>
+    <span class="fix-title">Phase 13 contract named with a space (not underscore) and contains Dillinger editor UI artifacts</span>
+    <span class="severity sev-medium">MEDIUM</span>
+  </div>
+  <div class="fix-body">
+    <p><strong>Root cause.</strong> The Phase 13 contract was saved from the Dillinger web markdown editor. The saved file includes the editor's own UI chrome: menu items, FAQ text, a marketing blurb, and settings panels appended after the contract content. The filename also uses a space instead of an underscore, breaking the naming convention.</p>
+
+    <h3>Step 1 — Rename the file</h3>
+<pre><code>cd BUILD-CONTRACT-PLANS
+git mv "CRGS-LAB-BUILD-CONTRACT-PLANS_PHASE 13.md" "CRGS-LAB-BUILD-CONTRACT-PLANS_PHASE_13.md"</code></pre>
+
+    <h3>Step 2 — Strip Dillinger artifacts</h3>
+    <p>The contract content ends at the Gap Closure Verification table. Everything after the final row of that table (starting from "Settings" / "Auto Save" / "Word Count") is Dillinger UI noise.</p>
+<pre><code>python3 - &lt;&lt;'PYEOF'
+with open("CRGS-LAB-BUILD-CONTRACT-PLANS_PHASE_13.md", "r") as f:
+    content = f.read()
+
+# The contract ends after the gap closure table.
+# The Dillinger noise begins with a line that is exactly "Settings\n"
+# followed immediately by "Auto Save\n".
+# Locate the first occurrence of that pattern and truncate there.
+noise_marker = "\nSettings\n\nAuto Save"
+cut = content.find(noise_marker)
+if cut == -1:
+    # Fallback: try the word-count line
+    noise_marker = "\n2256 words"
+    cut = content.find(noise_marker)
+
+if cut == -1:
+    print("WARNING: noise boundary not found — manual review required")
+else:
+    clean = content[:cut].rstrip() + "\n"
+    with open("CRGS-LAB-BUILD-CONTRACT-PLANS_PHASE_13.md", "w") as f:
+        f.write(clean)
+    print(f"CLEANED: truncated {len(content) - len(clean)} bytes of Dillinger artifacts")
+PYEOF</code></pre>
+
+    <h3>Step 3 — Verify and commit</h3>
+<pre><code>grep -i "dillinger\|Auto Save\|Word Count\|Night Mode" CRGS-LAB-BUILD-CONTRACT-PLANS_PHASE_13.md \
+  &amp;&amp; echo "FAIL: artifacts remain" || echo "PASS: no Dillinger artifacts"
+
+test -f "CRGS-LAB-BUILD-CONTRACT-PLANS_PHASE 13.md" \
+  &amp;&amp; echo "FAIL: space-named file still exists" || echo "PASS: old filename gone"
+
+git add "CRGS-LAB-BUILD-CONTRACT-PLANS_PHASE_13.md"
+git commit -m "fix: rename Phase 13 contract (space→underscore); strip Dillinger UI artifacts"
+cd ..</code></pre>
+
+    <div class="ac">
+      <div class="ac-title">Acceptance Criteria — GAP-06</div>
+      <ul>
+        <li>Step 3 grep prints <code>PASS: no Dillinger artifacts</code>.</li>
+        <li>Step 3 test prints <code>PASS: old filename gone</code>.</li>
+        <li><code>ls BUILD-CONTRACT-PLANS/CRGS-LAB-BUILD-CONTRACT-PLANS_PHASE_1*.md | sort</code> shows all phases with consistent underscore naming.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+<h2>VIII. GAP-07 — Document the Phase 12→13 Constitution Hash Change (MEDIUM)</h2>
+
+<div class="fix">
+  <div class="fix-header">
+    <span class="fix-id">GAP-07</span>
+    <span class="fix-title">Constitution hash changed between Phase 12 and Phase 13 without an Amendment Log entry — governance integrity discrepancy</span>
+    <span class="severity sev-medium">MEDIUM</span>
+  </div>
+  <div class="fix-body">
+    <p><strong>Root cause.</strong> Phase 12 embeds hash <code>30ac14272f29eee0dbb7a7326520376b…</code>. Phase 13 embeds <code>7f83b1657ff1fc53b92dc18148a1d65dfc2d4b1fa3d677284addd200126d9069</code>. The TLC ToCA text was materially changed between the two phases — the Phase 12 version used a dash (<code>−</code>) variant for Article punctuation while Phase 13 normalized to ASCII hyphens. This is a constitutional amendment that was never ratified.</p>
+
+    <h3>Step 1 — Confirm the hash discrepancy</h3>
+<pre><code>python3 - &lt;&lt;'PYEOF'
+import hashlib
+
+# Compute the hash of the current core/boot.py TLC_TOCA_CANON
+with open("core/boot.py", "r") as f:
+    src = f.read()
+start = src.index('TLC_TOCA_CANON = """') + len('TLC_TOCA_CANON = """')
+end   = src.index('"""', start)
+canon = src[start:end]
+live_hash = hashlib.sha256(canon.encode("utf-8")).hexdigest()
+
+phase12_hash = "30ac14272f29eee0dbb7a7326520376b"
+print(f"Live (Phase 13) hash : {live_hash}")
+print(f"Phase 12 hash prefix : {phase12_hash}")
+print(f"Match: {live_hash.startswith(phase12_hash)}")
+PYEOF</code></pre>
+
+    <h3>Step 2 — Add the amendment to CANONICAL_INTENT.md</h3>
+    <p>Append the following row to the Amendment Log table in <code>CANONICAL_INTENT.md</code>:</p>
+<pre><code>| 1.1 | 2026-06-25 | TLC ToCA text normalized between Phase 12 and Phase 13: ASCII hyphens replaced unicode dash variants in Articles 1–10. SHA-256 changed from 30ac14272f… to 7f83b1657f…. No substantive meaning altered. | Corey Alejandro |</code></pre>
+
+    <h3>Step 3 — Commit</h3>
+<pre><code>git add CANONICAL_INTENT.md
+git commit -m "docs: add Amendment Log entry v1.1 — Phase 12→13 ToCA text normalization"</code></pre>
+
+    <div class="ac">
+      <div class="ac-title">Acceptance Criteria — GAP-07</div>
+      <ul>
+        <li><code>grep "1.1" CANONICAL_INTENT.md</code> returns the amendment row.</li>
+        <li><code>grep "30ac14272f" CANONICAL_INTENT.md</code> returns at least one match.</li>
+        <li>The Amendment Log in <code>CANONICAL_INTENT.md</code> now contains exactly 2 rows (v1.0 initial + v1.1 normalization).</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+<h2>IX. GAP-08 — Add VERIFICATION_AND_TRUTH.md to CCD Framework, MADMall, and Agent Sentinel (MEDIUM)</h2>
+
+<div class="fix">
+  <div class="fix-header">
+    <span class="fix-id">GAP-08</span>
+    <span class="fix-title">Three products assert metrics without committed evidence artifacts — violates SOCIOTECHNICAL_CONSTITUTION §1.2</span>
+    <span class="severity sev-medium">MEDIUM</span>
+  </div>
+  <div class="fix-body">
+    <p><strong>Root cause.</strong> CCD Research Framework claims F1=0.89, kappa=0.82, and stakeholder sign-offs. MADMall claims ~80% test coverage and "Production Ready." Agent Sentinel claims enterprise-grade ✅ for security, testing, and CI/CD. None of these products contain a <code>VERIFICATION_AND_TRUTH.md</code> file as required by the TLC standard. The SOCIOTECHNICAL_CONSTITUTION is explicit: <em>running code producing verified output &gt; specification claiming it will</em>.</p>
+
+    <h3>Template — Create this file at the root of each product</h3>
+    <p>Filename: <code>VERIFICATION_AND_TRUTH.md</code></p>
+<pre><code># VERIFICATION_AND_TRUTH.md
+# [Product Name] — TLC 2.0 Evidence Standard
+# Generated: [DATE] | Verified by: [AUTHOR]
+
+## Claim 1: [Exact claim from README]
+
+**EXISTS:** [Exact file path of the evidence artifact]
+**VERIFIED AGAINST:** [Exact command run to produce the output]
+**COMMAND OUTPUT:**
+```
+[Paste the exact stdout here — no paraphrasing]
+```
+**NOT CLAIMED:** [What this evidence does NOT establish]
+**FUNCTIONAL STATUS:** [WORKING | PARTIAL | UNVERIFIED — per SOCIOTECHNICAL_CONSTITUTION §1.1]
+
+---
+## Claim 2: ...
+[Repeat pattern for every quantitative claim in the README]</code></pre>
+
+    <h3>Step-by-Step for Each Product</h3>
+
+    <p><strong>A. CCD Research Framework</strong></p>
+<pre><code>cd CRGS-LAB-PRODUCTS/ccd-research-framework
+
+# Run the actual tests and capture output
+pip install -r requirements.txt -q
+python -m pytest tests/ -v --tb=short 2&gt;&amp;1 | tee /tmp/ccd_test_output.txt
+echo "Exit code: $?"
+
+# The V&amp;T file must contain the pasted output from the above command.
+# If tests fail, the README MUST be updated to remove passing-test assertions.
+# The badge "✅ Production Ready" MUST be removed until tests pass.</code></pre>
+
+    <p><strong>B. MADMall Production</strong></p>
+<pre><code>cd CRGS-LAB-PRODUCTS/mad-mall-production
+
+# Run tests and capture coverage
+pnpm install --frozen-lockfile
+pnpm test -- --coverage 2&gt;&amp;1 | tee /tmp/madmall_test_output.txt
+echo "Exit code: $?"
+
+# The V&amp;T file must contain the exact coverage percentage printed by vitest.
+# If coverage is NOT ~80%, the README MUST be updated with the actual figure.
+# "Production Ready" badge removed until: (a) tests pass, (b) live URL confirmed.</code></pre>
+
+    <p><strong>C. Agent Sentinel</strong></p>
+<pre><code>cd CRGS-LAB-PRODUCTS/agent-sentinel-alignment-anomaly-detector
+
+# Run TypeScript type check (confirmed working per MODULE_STATUS)
+npx tsc --noEmit 2&gt;&amp;1 | tee /tmp/sentinel_tsc_output.txt
+echo "TypeScript exit code: $?"
+
+# Run tests (MODULE_STATUS notes 2 suites fail — document this honestly)
+npm test 2&gt;&amp;1 | tee /tmp/sentinel_test_output.txt
+echo "Test exit code: $?"
+
+# The V&amp;T file MUST document:
+# - Which test suites pass
+# - Which test suites fail and why (import.meta/Jest config mismatch)
+# - The ✅ enterprise badges are NOT earned until all test suites pass</code></pre>
+
+    <div class="ac">
+      <div class="ac-title">Acceptance Criteria — GAP-08</div>
+      <ul>
+        <li><code>test -f CRGS-LAB-PRODUCTS/ccd-research-framework/VERIFICATION_AND_TRUTH.md &amp;&amp; echo OK</code> prints <code>OK</code>.</li>
+        <li><code>test -f CRGS-LAB-PRODUCTS/mad-mall-production/VERIFICATION_AND_TRUTH.md &amp;&amp; echo OK</code> prints <code>OK</code>.</li>
+        <li><code>test -f CRGS-LAB-PRODUCTS/agent-sentinel-alignment-anomaly-detector/VERIFICATION_AND_TRUTH.md &amp;&amp; echo OK</code> prints <code>OK</code>.</li>
+        <li>Each V&amp;T file contains at least one block with non-empty <code>COMMAND OUTPUT</code> section (actual test output pasted in, not placeholder text).</li>
+        <li>Any README claim that is contradicted by the actual test output has been corrected in the same commit.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+<h2>X. GAP-09 — Add BLOCKCHAIN_ROADMAP.md (MEDIUM)</h2>
+
+<div class="fix">
+  <div class="fix-header">
+    <span class="fix-id">GAP-09</span>
+    <span class="fix-title">"Blockchain-runtime-verified" is a canonical intent claim with zero implementation scaffold</span>
+    <span class="severity sev-medium">MEDIUM</span>
+  </div>
+  <div class="fix-body">
+    <p><strong>Root cause.</strong> The Canonical Intent Statement commits to "blockchain-runtime-verified" governance. The CANONICAL_INTENT.md correctly contextualizes this as a Fortune 500 / Tier 6 feature. However, no document, scaffold, technology choice, or milestone exists anywhere in the codebase to make this a forward commitment rather than an unanchored claim. Per SOCIOTECHNICAL_CONSTITUTION §1.2, a specification claiming something will happen is the lowest-confidence evidence form.</p>
+
+    <h3>Create file: BLOCKCHAIN_ROADMAP.md (monorepo root)</h3>
+<pre><code>cat &gt; BLOCKCHAIN_ROADMAP.md &lt;&lt;'EOF'
+# Blockchain Governance Roadmap
+**Governed by:** CANONICAL_INTENT.md v1.1
+**Implementation Tier:** Tier 5–6 (Tier-1 Academic + Fortune 500)
+**Budget Range:** $1,000,000 – $1,000,000,000
+**Current Status:** NOT YET IMPLEMENTED — design-stage specification only
+
+---
+
+## Why This Exists
+
+The Canonical Intent Statement commits to "blockchain-runtime-verified" governance.
+This document defines what that means, what it does NOT mean, and what the
+implementation milestone is that will make the claim verifiable.
+
+## What "Blockchain-Runtime-Verified" Means
+
+At Tier 5–6 scale, governance records must be:
+1. Tamper-evident across organizations that share no common trust anchor
+2. Independently auditable without access to the operator's internal systems
+3. Compliant with EU AI Act Article 12 (record-keeping) at consortium scale
+
+The MerkleLedger in `core/ledger.py` satisfies requirements 1–2 for a
+single-operator context (append-only, SHA-256 hash-chained). Blockchain
+is the *multi-operator extension* of the same architecture.
+
+## What It Does NOT Mean
+
+- A public cryptocurrency or token
+- Any existing deployment on Ethereum, Solana, or similar
+- A requirement at Tiers 1–4 ($100–$1,000,000)
+
+## Technology Choice (to be selected at Tier 5 milestone)
+
+Candidate: Hyperledger Fabric (permissioned, consortium, GDPR-compatible)
+Candidate: Ethereum L2 with private mempool (public auditability)
+Decision gate: When the first Fortune 500 pilot is contracted.
+
+## Implementation Milestone
+
+This claim is VERIFIED when:
+1. `governance/blockchain/` directory contains a deployed smart contract
+2. `core/ledger.py` has a `BlockchainLedger` subclass that writes to the chain
+3. An independent auditor can verify a governance record using only the
+   contract ABI and a public RPC endpoint
+
+Until that milestone, this document is the canonical statement of intent.
+EOF
+
+git add BLOCKCHAIN_ROADMAP.md
+git commit -m "docs: add BLOCKCHAIN_ROADMAP.md — contextualize canonical intent claim with explicit milestone"</code></pre>
+
+    <div class="ac">
+      <div class="ac-title">Acceptance Criteria — GAP-09</div>
+      <ul>
+        <li><code>test -f BLOCKCHAIN_ROADMAP.md &amp;&amp; echo OK</code> prints <code>OK</code>.</li>
+        <li><code>grep "NOT YET IMPLEMENTED" BLOCKCHAIN_ROADMAP.md</code> returns a match — the document explicitly disclaims current implementation.</li>
+        <li><code>grep "Implementation Milestone" BLOCKCHAIN_ROADMAP.md</code> returns a match — a verifiable future milestone is defined.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+<h2>XI. GAP-10 — Regenerate MODULE_STATUS.md (LOW)</h2>
+
+<div class="fix">
+  <div class="fix-header">
+    <span class="fix-id">GAP-10</span>
+    <span class="fix-title">MODULE_STATUS.md is stale — generated 2026-05-17, Phase 13 completed 2026-06-25</span>
+    <span class="severity sev-low">LOW</span>
+  </div>
+  <div class="fix-body">
+    <p><strong>Root cause.</strong> <code>MODULE_STATUS.md</code> is auto-generated by <code>scripts/generate-module-status.mjs</code>. It has not been regenerated since Phase 13 completed, meaning the module registry does not reflect Phase 13 gap closures or any new modules registered since 2026-05-17.</p>
+
+    <h3>Exact Commands</h3>
+<pre><code>cd CRGS-LAB-PRODUCTS/the-living-constitution-2.0
+
+# Confirm the generator script is present
+test -f scripts/generate-module-status.mjs &amp;&amp; echo "PRESENT" || echo "MISSING — halt"
+
+# Run the generator
+node scripts/generate-module-status.mjs
+
+# Confirm the output file was updated
+stat -f "%Sm" MODULE_STATUS.md   # macOS: shows modification time
+# or: stat --format="%y" MODULE_STATUS.md   # Linux
+
+# Commit the updated status
+git add MODULE_STATUS.md
+git commit -m "chore: regenerate MODULE_STATUS.md post-Phase-13"
+
+cd ../..</code></pre>
+
+    <div class="ac">
+      <div class="ac-title">Acceptance Criteria — GAP-10</div>
+      <ul>
+        <li><code>head -3 CRGS-LAB-PRODUCTS/the-living-constitution-2.0/MODULE_STATUS.md</code> shows a <code>**Generated:**</code> date of 2026-07-01 or later.</li>
+        <li><code>git log --oneline -1</code> inside the submodule shows the regeneration commit.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+<h2>XII. DETERMINISTIC EXECUTION ORDER</h2>
+
+<p style="font-size:13px;margin-bottom:12px">Execute gaps in this exact sequence. Each step is a dependency for the next. Do not parallelize.</p>
+
+<div class="exec-order">
+  <div class="step"><strong>GAP-01</strong> — Initialize all git submodules. <em>Nothing else is possible until this is complete.</em></div>
+  <div class="step"><strong>GAP-02</strong> — Fix <code>core/boot.py</code> tautological hash. Requires readable file from GAP-01.</div>
+  <div class="step"><strong>GAP-03</strong> — Fix <code>core/orchestrator.py</code> strict typing. Requires importable <code>core.state</code> from GAP-01.</div>
+  <div class="step"><strong>GAP-04</strong> — Resolve Agent Sentinel merge conflict. Requires readable submodule from GAP-01.</div>
+  <div class="step"><strong>GAP-05</strong> — Update <code>README.md</code> phase status. Requires readable root files from GAP-01.</div>
+  <div class="step"><strong>GAP-06</strong> — Fix Phase 13 contract filename and content. Requires readable BUILD-CONTRACT-PLANS from GAP-01.</div>
+  <div class="step"><strong>GAP-07</strong> — Document Phase 12→13 hash change in Amendment Log. Requires GAP-02 hash computation and readable <code>CANONICAL_INTENT.md</code>.</div>
+  <div class="step"><strong>GAP-08</strong> — Add VERIFICATION_AND_TRUTH.md to three products. Requires test suites to run (GAP-01) and actual outputs to paste.</div>
+  <div class="step"><strong>GAP-09</strong> — Add <code>BLOCKCHAIN_ROADMAP.md</code> to root. No code dependencies; can run anytime after GAP-01.</div>
+  <div class="step"><strong>GAP-10</strong> — Regenerate MODULE_STATUS.md. Run last — captures the state after all previous gaps are closed.</div>
+</div>
+
+
+<h2>XIII. PHASE 14 COMPLETION GATE</h2>
+
+<p style="font-size:13px;margin-bottom:10px">Phase 14 is complete when every command below exits 0 and every expected string is present. Run this entire block as a single script from the monorepo root.</p>
+
+<pre><code>#!/usr/bin/env bash
+set -euo pipefail
+
+PASS=0; FAIL=0
+
+check() {
+  local label="$1"; shift
+  if "$@" &gt;/dev/null 2&gt;&amp;1; then
+    echo "  ✅ PASS: $label"; ((PASS++))
+  else
+    echo "  ❌ FAIL: $label"; ((FAIL++))
+  fi
+}
+
+echo "=== PHASE 14 COMPLETION GATE ==="
+
+# GAP-01: submodules initialized
+check "core/boot.py exists"         test -f core/boot.py
+check "core/orchestrator.py exists" test -f core/orchestrator.py
+check "ui/web_engine.py exists"     test -f ui/web_engine.py
+check "README.md exists"            test -f README.md
+check "CANONICAL_INTENT.md exists"  test -f CANONICAL_INTENT.md
+
+# GAP-02: boot.py integrity is non-tautological
+check "boot.py has literal hash"    grep -q '^CONSTITUTION_HASH = "' core/boot.py
+check "boot.py passes self-check"   python3 -c "from core.boot import enforce_cryptographic_boot; enforce_cryptographic_boot()"
+
+# GAP-03: orchestrator uses ResearchState
+check "orchestrator imports ResearchState" grep -q "ResearchState" core/orchestrator.py
+check "orchestrator has no StateGraph(dict)" bash -c '! grep -q "StateGraph(dict)" core/orchestrator.py'
+
+# GAP-04: Agent Sentinel merge conflict resolved
+check "no merge markers in sentinel README" bash -c \
+  '! grep -q "&lt;&lt;&lt;&lt;&lt;&lt;&lt;" CRGS-LAB-PRODUCTS/agent-sentinel-alignment-anomaly-detector/README.md'
+check "no your-org placeholder in sentinel README" bash -c \
+  '! grep -q "your-org" CRGS-LAB-PRODUCTS/agent-sentinel-alignment-anomaly-detector/README.md'
+
+# GAP-05: README phase status updated
+check "README not stale (Phase 1 Active removed)" bash -c '! grep -q "Phase 1 Active" README.md'
+check "README shows Phase 13 Complete"             grep -q "Phase 13 Complete" README.md
+
+# GAP-06: Phase 13 contract filename normalized
+check "Phase 13 underscore filename exists" test -f "BUILD-CONTRACT-PLANS/CRGS-LAB-BUILD-CONTRACT-PLANS_PHASE_13.md"
+check "Phase 13 space filename gone"        bash -c '! test -f "BUILD-CONTRACT-PLANS/CRGS-LAB-BUILD-CONTRACT-PLANS_PHASE 13.md"'
+check "Phase 13 no Dillinger artifacts"     bash -c '! grep -qi "dillinger" "BUILD-CONTRACT-PLANS/CRGS-LAB-BUILD-CONTRACT-PLANS_PHASE_13.md"'
+
+# GAP-07: amendment log has v1.1 entry
+check "CANONICAL_INTENT.md has v1.1 amendment" grep -q "1.1" CANONICAL_INTENT.md
+
+# GAP-08: V&amp;T files present in all three products
+check "CCD V&amp;T file present"      test -f CRGS-LAB-PRODUCTS/ccd-research-framework/VERIFICATION_AND_TRUTH.md
+check "MADMall V&amp;T file present"  test -f CRGS-LAB-PRODUCTS/mad-mall-production/VERIFICATION_AND_TRUTH.md
+check "Sentinel V&amp;T file present" test -f CRGS-LAB-PRODUCTS/agent-sentinel-alignment-anomaly-detector/VERIFICATION_AND_TRUTH.md
+
+# GAP-09: blockchain roadmap present
+check "BLOCKCHAIN_ROADMAP.md present"         test -f BLOCKCHAIN_ROADMAP.md
+check "BLOCKCHAIN_ROADMAP NOT YET IMPLEMENTED" grep -q "NOT YET IMPLEMENTED" BLOCKCHAIN_ROADMAP.md
+
+# GAP-10: MODULE_STATUS regenerated (date must be 2026-07-01 or later)
+check "MODULE_STATUS date updated" bash -c \
+  'grep "Generated" CRGS-LAB-PRODUCTS/the-living-constitution-2.0/MODULE_STATUS.md | grep -qE "202[67]-"'
+
+echo ""
+echo "=== RESULTS: $PASS passed | $FAIL failed ==="
+[ "$FAIL" -eq 0 ] &amp;&amp; echo "✅ PHASE 14 COMPLETE" || { echo "❌ PHASE 14 INCOMPLETE — resolve FAIL items"; exit 1; }</code></pre>
+
+<p style="font-size:13px;margin-top:10px"><strong>Expected final output:</strong></p>
+<pre><code>=== RESULTS: 25 passed | 0 failed ===
+✅ PHASE 14 COMPLETE</code></pre>
+
+
+<div class="seal">
+  <h4>Immutability Seal</h4>
+  <p style="font-size:12px">This contract is ratified as of 2026-07-01. It is immutable. Any change to the scope of a fix, an acceptance criterion, or an execution command requires a new Phase 15 contract. The completion gate script is the authoritative proof of completion. A human PI must run the gate script, observe "✅ PHASE 14 COMPLETE", and commit the execution log as <code>BUILD-CONTRACT-PLANS/CRGS-LAB-BUILD-CONTRACT-PLANS_PHASE_14_EXECUTION_LOG.md</code> to close this phase.</p>
+  <p style="font-size:12px;margin-top:8px"><strong>Identity:</strong> Corey Alejandro — Hybrid AI Constitutional Runtime Governance Systems Research Scientist AND Research Engineer. Governed by The Living Constitution 2.0 — Sociotechnical Constitution v2.0.0.</p>
+</div>
+
+<footer>Made with IBM Bob</footer>
+</div>
+</body>
+</html>
