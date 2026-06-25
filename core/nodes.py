@@ -76,7 +76,10 @@ def verifier_node(state: dict) -> dict:
     response = verifier_llm.invoke(prompt)
     verification_text = getattr(response, "content", str(response))
 
-    passed, failures = enforce_nist_eu_self_validation(verification_text)
+    passed, failures = enforce_nist_eu_self_validation(
+        verification_text,
+        physical_outcome_spec=state.get("physical_outcome_spec", ""),
+    )
     if not passed:
         raise ValueError(f"NIST/EU Self-Validation FAILED: {failures}")
 

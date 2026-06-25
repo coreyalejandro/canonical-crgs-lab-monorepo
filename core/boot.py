@@ -59,7 +59,10 @@ CONSTITUTION_HASH = "30ac14272f29eee0dbb7a7326520376b2d4a1f44be6ab6fb8281cbbf7e3
 
 
 def enforce_cryptographic_boot() -> str:
-    """Hard-crash if TLC_TOCA_CANON has been mutated since Phase 14 ratification."""
+    """
+    Hard-crash if TLC_TOCA_CANON has been mutated since Phase 14 ratification.
+    Also validates the Merkle audit ledger chain before any execution.
+    """
     live_hash = hashlib.sha256(TLC_TOCA_CANON.encode("utf-8")).hexdigest()
     if live_hash != CONSTITUTION_HASH:
         sys.stderr.write(
@@ -69,5 +72,14 @@ def enforce_cryptographic_boot() -> str:
             "System halted.\n"
         )
         sys.exit(1)
-    print(f"✅ TLC ToCA Cryptographically Verified [{live_hash[:16]}…]. Booting Cognitive Boardroom…")
+
+    # Validate Merkle ledger chain on every boot
+    from core.ledger import MerkleLedger  # local import avoids circular at module load
+    try:
+        MerkleLedger().validate_chain()
+    except ValueError as exc:
+        sys.stderr.write(f"FATAL: Audit ledger chain integrity violated.\n  {exc}\nSystem halted.\n")
+        sys.exit(1)
+
+    print(f"✅ TLC ToCA Cryptographically Verified [{live_hash[:16]}…]. Ledger chain intact. Booting Cognitive Boardroom…")
     return live_hash
