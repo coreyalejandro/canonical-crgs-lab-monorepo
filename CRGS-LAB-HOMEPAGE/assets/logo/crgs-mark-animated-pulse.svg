@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="80" height="80" role="img" aria-label="CRGS Lab animated mark with runtime pulse">
+  <style>
+    .bar{opacity:0;animation:pBarIn .5s ease forwards}
+    .b1{animation-delay:.06s}.b2{animation-delay:.14s}.b3{animation-delay:.22s}.b4{animation-delay:.30s}.b5{animation-delay:.38s}.b6{animation-delay:.46s}
+    .axis{stroke-dasharray:58;stroke-dashoffset:58;animation:pDraw .7s ease .5s forwards}
+    /* node draws in, then a slow gentle pulse (2.8s, low amplitude — not a flash) */
+    .node{opacity:0;transform-box:fill-box;transform-origin:center;transform:scale(0);animation:pPop .55s cubic-bezier(.2,.8,.3,1.3) 1.15s forwards, pPulse 2.8s ease-in-out 1.9s infinite}
+    .halo{transform-box:fill-box;transform-origin:center;opacity:0;animation:pHalo 2.8s ease-out 1.9s infinite}
+    .nodeInner{opacity:0;animation:pFade .3s ease 1.5s forwards}
+    @keyframes pBarIn{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes pDraw{to{stroke-dashoffset:0}}
+    @keyframes pPop{0%{opacity:0;transform:scale(0)}70%{opacity:1;transform:scale(1.18)}100%{opacity:1;transform:scale(1)}}
+    @keyframes pPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.09)}}
+    @keyframes pHalo{0%{opacity:.30;transform:scale(1)}70%,100%{opacity:0;transform:scale(2.4)}}
+    @keyframes pFade{to{opacity:1}}
+    @media (prefers-reduced-motion: reduce){
+      .bar,.node,.nodeInner{opacity:1;transform:none;animation:none}
+      .axis{stroke-dashoffset:0;animation:none}
+      .halo{display:none}
+    }
+  </style>
+  <rect class="bar b6" x="25" y="14.3" width="30" height="5.4" rx="2.4" fill="#1D1813"/>
+  <rect class="bar b5" x="22" y="23.5" width="36" height="5.4" rx="2.4" fill="#1D1813"/>
+  <rect class="bar b4" x="19" y="32.7" width="42" height="5.4" rx="2.4" fill="#1D1813"/>
+  <rect class="bar b3" x="17" y="41.9" width="46" height="5.4" rx="2.4" fill="#1D1813"/>
+  <rect class="bar b2" x="15" y="51.1" width="50" height="5.4" rx="2.4" fill="#1D1813"/>
+  <rect class="bar b1" x="13" y="60.3" width="54" height="6" rx="2.8" fill="#8C4E34"/>
+  <line class="axis" x1="40" y1="66.3" x2="40" y2="10" stroke="#8C4E34" stroke-width="3.4" stroke-linecap="round"/>
+  <circle class="halo" cx="40" cy="10" r="4.1" fill="none" stroke="#8C4E34" stroke-width="1.4"/>
+  <circle class="node" cx="40" cy="10" r="4.1" fill="#8C4E34"/>
+  <circle class="nodeInner" cx="40" cy="10" r="1.6" fill="#F3EEE3"/>
+</svg>

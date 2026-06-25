@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="80" height="80" role="img" aria-label="CRGS Lab mark: a six-layer governance stack on a constitutional base, crossed by a runtime axis">
+  <!-- Six-layer stack (apex to base), narrowing upward like a standard / monument -->
+  <g fill="#1D1813">
+    <rect x="25" y="14.3" width="30" height="5.4" rx="2.4"/>
+    <rect x="22" y="23.5" width="36" height="5.4" rx="2.4"/>
+    <rect x="19" y="32.7" width="42" height="5.4" rx="2.4"/>
+    <rect x="17" y="41.9" width="46" height="5.4" rx="2.4"/>
+    <rect x="15" y="51.1" width="50" height="5.4" rx="2.4"/>
+  </g>
+  <!-- Constitutional base layer (terracotta) -->
+  <rect x="13" y="60.3" width="54" height="6.0" rx="2.8" fill="#8C4E34"/>
+  <!-- Runtime axis through the stack -->
+  <line x1="40" y1="10" x2="40" y2="66.3" stroke="#8C4E34" stroke-width="3.4" stroke-linecap="round"/>
+  <!-- Live runtime node at the apex -->
+  <circle cx="40" cy="10" r="4.1" fill="#8C4E34"/>
+  <circle cx="40" cy="10" r="1.6" fill="#F3EEE3"/>
+</svg>
