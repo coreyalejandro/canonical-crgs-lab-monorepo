@@ -33,6 +33,7 @@ from __future__ import annotations
 import hashlib
 import json
 import pathlib
+import shutil
 import subprocess
 from datetime import datetime, timezone
 
@@ -109,16 +110,40 @@ def compile_tier1_dossier(
     tex_path.write_text(latex_document, encoding="utf-8")
     print(f"[compiler] LaTeX source written → {tex_path}")
 
-    # Command the dockerised Tectonic engine
-    print("[compiler] Commanding PDF compilation microservice...")
-    subprocess.run(
-        ["docker", "exec", COMPILER_CONTAINER, "tectonic", f"{stamped_name}.tex"],
-        check=True,
-    )
-
+    # Compile PDF — try local tectonic first, then Docker, then skip gracefully
     pdf_path = OUTPUT_DIR / f"{stamped_name}.pdf"
-    print(f"[compiler] Tier-1 PDF generated → {pdf_path}")
-    return pdf_path
+    print("[compiler] Commanding PDF compilation microservice...")
+
+    # 1. Local tectonic binary (fastest, no Docker required)
+    tectonic_bin = shutil.which("tectonic")
+    if tectonic_bin:
+        try:
+            subprocess.run(
+                [tectonic_bin, str(tex_path)],
+                cwd=OUTPUT_DIR,
+                check=True,
+            )
+            print(f"[compiler] Tier-1 PDF generated (local tectonic) → {pdf_path}")
+            return pdf_path
+        except subprocess.CalledProcessError as exc:
+            print(f"[compiler] Local tectonic failed: {exc}")
+
+    # 2. Docker container (enterprise / CI)
+    try:
+        subprocess.run(
+            ["docker", "exec", COMPILER_CONTAINER, "tectonic", f"{stamped_name}.tex"],
+            check=True,
+            timeout=60,
+        )
+        print(f"[compiler] Tier-1 PDF generated (Docker tectonic) → {pdf_path}")
+        return pdf_path
+    except (subprocess.CalledProcessError, subprocess.TimeoutExpired, FileNotFoundError) as exc:
+        print(f"[compiler] Docker tectonic unavailable ({exc.__class__.__name__}) — "
+              "LaTeX source preserved. Install tectonic or start Docker to compile PDF.")
+
+    # 3. LaTeX source preserved — return .tex path as the artifact
+    print(f"[compiler] Artifact: {tex_path}  (PDF compile skipped — no LaTeX engine available)")
+    return tex_path
 
 
 # ── LaTeX renderer ────────────────────────────────────────────────────────────
