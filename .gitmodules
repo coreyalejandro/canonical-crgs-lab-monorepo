@@ -19,3 +19,6 @@
 [submodule "CRGS-LAB-PRODUCTS/UICare/Vision-Agents"]
 	path = CRGS-LAB-PRODUCTS/UICare/Vision-Agents
 	url = git@github.com:GetStream/Vision-Agents.git
+[submodule "CRGS-LAB-PRODUCTS/UICare/uicare-system"]
+	path = CRGS-LAB-PRODUCTS/UICare/uicare-system
+	url = git@github.com:coreyalejandro/uicare-system.git
