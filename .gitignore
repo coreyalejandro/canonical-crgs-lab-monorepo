@@ -1,2 +1,63 @@
-# OpenMemory - IDE/Assistant specific rules
+# ── Secrets — NEVER commit ────────────────────────────────────────────────────
+.env
+*.pem
+*.key
+*.p12
+*.pfx
+secrets/
+
+# ── Python ────────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+env/
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+.coverage
+coverage.xml
+
+# ── macOS ─────────────────────────────────────────────────────────────────────
+.DS_Store
+.AppleDouble
+._*
+
+# ── Node / JS ─────────────────────────────────────────────────────────────────
+node_modules/
+.next/
+*.tsbuildinfo
+
+# ── IDEs ──────────────────────────────────────────────────────────────────────
+.idea/
+.vscode/settings.json
+*.swp
+*~
 .cursor/rules/openmemory.mdc
+
+# ── Terraform ─────────────────────────────────────────────────────────────────
+terraform/.terraform/
+terraform/terraform.tfstate
+terraform/terraform.tfstate.backup
+terraform/.terraform.lock.hcl
+
+# ── Chainlit runtime ──────────────────────────────────────────────────────────
+.chainlit/.cache/
+
+# ── Wrangler (Cloudflare) ─────────────────────────────────────────────────────
+.wrangler/
+
+# ── STARTER KIT (reference only, not part of monorepo build) ─────────────────
+STARTER KIT/
+
+# ── Logs ──────────────────────────────────────────────────────────────────────
+*.log
+
+# ── Temp ──────────────────────────────────────────────────────────────────────
+*.tmp
+*.temp
+tmp/

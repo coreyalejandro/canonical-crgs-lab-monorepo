@@ -1,0 +1,7 @@
+# ── PHASE 12: LIVING CONSTITUTION HYBRID ORCHESTRATOR ────────────────────────
+# LangGraph checkpoint memory for human-in-the-loop interlock (Article 8)
+# Already included with langgraph — no new deps required.
+# Listed here for explicit governance audit trail per Article 6.
+
+# LangGraph checkpointing (bundled with langgraph — explicit pin for audit)
+langgraph>=1.1.10
