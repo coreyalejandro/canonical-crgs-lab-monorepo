@@ -42,6 +42,7 @@ services:
       - LLM_TEMPERATURE=0.0
       - ENFORCE_STRICT_CONSTITUTION=True
       - MAX_REVISION_LOOPS=3
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
     ports:
       - "8501:8501"
     volumes:
