@@ -118,24 +118,30 @@ def query_live_graph(state: ProductionResearchState) -> ProductionResearchState:
     """
     Pull constitutionally mapped claims from the Neo4j ETL ingestion layer.
     Returns at most 10 claim records relevant to the research query.
+    Falls back to empty context when Neo4j is unavailable (local / offline run).
     """
     query = state["research_query"]
     print(f"[orchestrator] Querying Knowledge Graph for: {query!r}")
 
-    with _get_driver().session() as session:
-        records = session.run(
-            """
-            MATCH (p:Paper)-[:ASSERTS]->(c:Claim)
-            WHERE toLower(p.title) CONTAINS toLower($query)
-               OR toLower(c.text)  CONTAINS toLower($query)
-            RETURN p.title AS paper, c.text AS claim
-            LIMIT 10
-            """,
-            query=query,
-        )
-        context = [{"paper": r["paper"], "claim": r["claim"]} for r in records]
+    context: list[dict] = []
+    try:
+        with _get_driver().session() as session:
+            records = session.run(
+                """
+                MATCH (p:Paper)-[:ASSERTS]->(c:Claim)
+                WHERE toLower(p.title) CONTAINS toLower($query)
+                   OR toLower(c.text)  CONTAINS toLower($query)
+                RETURN p.title AS paper, c.text AS claim
+                LIMIT 10
+                """,
+                query=query,
+            )
+            context = [{"paper": r["paper"], "claim": r["claim"]} for r in records]
+        print(f"[orchestrator] Graph context retrieved: {len(context)} claim(s).")
+    except Exception as neo4j_err:
+        print(f"[orchestrator] Neo4j unavailable ({neo4j_err.__class__.__name__}) — "
+              "proceeding without graph context (local run mode).")
 
-    print(f"[orchestrator] Graph context retrieved: {len(context)} claim(s).")
     return {**state, "graph_context": context, "revision_count": 0}
 
 
@@ -198,25 +204,37 @@ def execute_red_team_attack(state: ProductionResearchState) -> ProductionResearc
             "Constitutional loop limit reached — manual review required."
         )
 
-    with _get_driver().session() as session:
-        evaluator = RedTeamEvaluator(neo4j_session=session)
-        try:
-            result = evaluator.execute_attack(state["hypothesis_payload"])
-            # Mark the payload as stress-tested so compile_tier1_dossier accepts it
-            updated_payload = {
-                **state["hypothesis_payload"],
-                "status": result.status,
-            }
-            print(f"[orchestrator] Red Team: PASSED ({result.contradictions_found} contradictions reviewed).")
-            return {**state, "hypothesis_payload": updated_payload, "validation_status": result.status}
+    try:
+        driver_session = _get_driver().session()
+    except Exception as neo4j_err:
+        print(f"[orchestrator] Neo4j unavailable ({neo4j_err.__class__.__name__}) — "
+              "Red Team running in offline mode (no graph-grounded contradiction check).")
+        driver_session = None
 
-        except AdversarialVetoError as exc:
-            print(f"[orchestrator] Red Team: VETO — {exc}")
-            return {
-                **state,
-                "validation_status": "failed",
-                "revision_count": revision_count + 1,
-            }
+    try:
+        if driver_session:
+            evaluator = RedTeamEvaluator(neo4j_session=driver_session)
+        else:
+            evaluator = RedTeamEvaluator(neo4j_session=None)  # offline fallback
+
+        result = evaluator.execute_attack(state["hypothesis_payload"])
+        updated_payload = {
+            **state["hypothesis_payload"],
+            "status": result.status,
+        }
+        print(f"[orchestrator] Red Team: PASSED ({result.contradictions_found} contradictions reviewed).")
+        return {**state, "hypothesis_payload": updated_payload, "validation_status": result.status}
+
+    except AdversarialVetoError as exc:
+        print(f"[orchestrator] Red Team: VETO — {exc}")
+        return {
+            **state,
+            "validation_status": "failed",
+            "revision_count": revision_count + 1,
+        }
+    finally:
+        if driver_session:
+            driver_session.close()
 
 
 # ── Node 4 — Compile Final PDF ────────────────────────────────────────────────

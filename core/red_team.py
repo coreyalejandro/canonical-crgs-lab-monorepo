@@ -90,7 +90,10 @@ class RedTeamEvaluator:
         Retrieve all [:CONTRADICTS] relationships from Neo4j whose claim text
         contains the given keyword.  Returns an empty list if the graph has no
         contradictory evidence — this is a valid (strong) result for the payload.
+        Also returns an empty list when db is None (offline / local run mode).
         """
+        if self.db is None:
+            return []
         query = (
             "MATCH (p:Paper)-[:CONTRADICTS]->(c:Claim) "
             "WHERE toLower(c.text) CONTAINS toLower($keyword) "

@@ -15,7 +15,7 @@ schema. If it cannot, execution halts and the constitutional revision
 loop increments (see MAX_REVISION_LOOPS in docker-compose.yml).
 """
 
-from langchain_core.pydantic_v1 import BaseModel, Field
+from pydantic import BaseModel, Field
 from langchain_openai import ChatOpenAI
 
 
