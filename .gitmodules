@@ -1,0 +1,24 @@
+[submodule "CRGS-LAB-PORTFOLIO/the-living-constitution-2.0-portfolio"]
+	path = CRGS-LAB-PORTFOLIO/the-living-constitution-2.0-portfolio
+	url = https://github.com/coreyalejandro/the-living-constitution-2.0-portfolio.git
+[submodule "CRGS-LAB-PRODUCTS/the-living-constitution-2.0"]
+	path = CRGS-LAB-PRODUCTS/the-living-constitution-2.0
+	url = git@github.com:coreyalejandro/the-living-constitution-2.0.git
+[submodule "CRGS-LAB-PRODUCTS/ccd-research-framework"]
+	path = CRGS-LAB-PRODUCTS/ccd-research-framework
+	url = https://github.com/coreyalejandro/ccd-research-framework.git
+[submodule "CRGS-LAB-PRODUCTS/agent-sentinel-alignment-anomaly-detector"]
+	path = CRGS-LAB-PRODUCTS/agent-sentinel-alignment-anomaly-detector
+	url = git@github.com:coreyalejandro/agent-sentinel-alignment-anomaly-Detector.git
+[submodule "CRGS-LAB-PRODUCTS/mad-mall-production"]
+	path = CRGS-LAB-PRODUCTS/mad-mall-production
+	url = git@github.com:coreyalejandro/mad-mall-production.git
+[submodule "CRGS-LAB-PRODUCTS/UICare/uicare-hui"]
+	path = CRGS-LAB-PRODUCTS/UICare/uicare-hui
+	url = git@github.com:coreyalejandro/uicare-hui.git
+[submodule "CRGS-LAB-PRODUCTS/UICare/uicare-system"]
+	path = CRGS-LAB-PRODUCTS/UICare/uicare-system
+	url = git@github.com:coreyalejandro/uicare-system.git
+[submodule "CRGS-LAB-PRODUCTS/UICare/Vision-Agents"]
+	path = CRGS-LAB-PRODUCTS/UICare/Vision-Agents
+	url = git@github.com:GetStream/Vision-Agents.git

@@ -1,0 +1,67 @@
+{
+  "name": "calsp-bootstrapped-prototype",
+  "version": "1.0.0",
+  "description": "Constitutional Adaptive Learning System - Bootstrapped Prototype (<$1K)",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:backend\"",
+    "dev:frontend": "cd frontend && npm run dev",
+    "dev:backend": "cd backend && uvicorn main:app --reload --port 8000",
+    "build": "cd frontend && npm run build",
+    "start": "npm run start:backend",
+    "start:backend": "cd backend && uvicorn main:app --host 0.0.0.0 --port 8000",
+    "test": "npm run test:frontend && npm run test:backend",
+    "test:frontend": "cd frontend && npm test",
+    "test:backend": "cd backend && python -m pytest",
+    "lint": "npm run lint:frontend && npm run lint:backend",
+    "lint:frontend": "cd frontend && npm run lint",
+    "lint:backend": "cd backend && flake8 . && black --check .",
+    "format": "npm run format:frontend && npm run format:backend",
+    "format:frontend": "cd frontend && npm run format",
+    "format:backend": "cd backend && black .",
+    "a11y-test": "cd frontend && npm run test:a11y",
+    "demo": "IRB_APPROVED=false COLLECT_REAL_DATA=false npm run dev",
+    "setup": "npm run setup:frontend && npm run setup:backend",
+    "setup:frontend": "cd frontend && npm install",
+    "setup:backend": "cd backend && pip install -r requirements.txt",
+    "docker:build": "docker-compose build",
+    "docker:up": "docker-compose up",
+    "docker:down": "docker-compose down",
+    "export-data": "cd backend && python ../scripts/export-data.py",
+    "create-repro-package": "node scripts/create-repro-package.js",
+    "test-adversarial": "cd backend && python ../scripts/test-adversarial.py",
+    "test-irb-compliance": "node scripts/test-irb-compliance.js",
+    "fix-a11y": "cd frontend && npm run fix:a11y"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/constitutional-adaptive-learning.git"
+  },
+  "keywords": [
+    "constitutional-ai",
+    "neurodiversity",
+    "adaptive-learning",
+    "accessibility",
+    "ai-safety",
+    "research-prototype"
+  ],
+  "author": "CALSP Research Team",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/yourusername/constitutional-adaptive-learning/issues"
+  },
+  "homepage": "https://github.com/yourusername/constitutional-adaptive-learning#readme",
+  "devDependencies": {
+    "concurrently": "^8.2.0",
+    "eslint": "^8.50.0",
+    "prettier": "^3.0.3"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
+  "funding": {
+    "type": "individual",
+    "url": "https://github.com/sponsors/yourusername"
+  }
+}

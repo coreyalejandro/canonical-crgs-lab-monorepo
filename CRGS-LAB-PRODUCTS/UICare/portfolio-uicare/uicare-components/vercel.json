@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "buildCommand": "yarn build",
+  "devCommand": "yarn dev",
+  "installCommand": "yarn install",
+  "framework": "create-react-app",
+  "regions": ["sfo1"],
+  "public": false,
+  "github": {
+    "silent": true
+  }
+} 
