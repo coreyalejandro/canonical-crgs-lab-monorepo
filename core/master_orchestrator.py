@@ -54,6 +54,7 @@ from core.compiler import compile_tier1_dossier
 from core.fabrication_engine import CyberPhysicalEngine, fabrication_node
 from core.llm_binding import get_deterministic_generator, HypothesisPayload
 from core.red_team import AdversarialVetoError, RedTeamEvaluator
+from core.regulatory_engine import RegulatoryEngine, regulatory_node
 
 
 # ── Constants ─────────────────────────────────────────────────────────────────
@@ -92,6 +93,7 @@ class ProductionResearchState(TypedDict, total=False):
     audit_hash:           str         # SHA-256 fingerprint written by audit node (Phase 7)
     commercial_blueprint: dict        # Patent claims + BOM written by commercialize node (Phase 8)
     fabrication_assets:   dict        # CAD model path + cloud lab protocol path (Phase 9)
+    regulatory_assets:    dict        # Compliance pathway + dossier path (Phase 10)
     final_output_path:    str         # Path to compiled PDF
 
 
@@ -272,7 +274,7 @@ def build_orchestrator() -> StateGraph:
     Assemble and compile the LangGraph state machine.
     Called once at module import — app_executor is the compiled instance.
 
-    Full pipeline (Phases 1–9):
+    Full pipeline (Phases 1–10):
         query_graph
           → generate_hypothesis
             → red_team
@@ -281,7 +283,8 @@ def build_orchestrator() -> StateGraph:
                             → commercialize  (Phase 8 — patent + BOM)
                                 ↙ prior_art_conflict: back to generate_hypothesis
                                 ↘ passed: fabricate  (Phase 9 — CAD + Cloud Lab)
-                                              → compile_pdf → END
+                                              → regulate  (Phase 10 — compliance)
+                                                  → compile_pdf → END
     """
     workflow = StateGraph(ProductionResearchState)
 
@@ -291,6 +294,7 @@ def build_orchestrator() -> StateGraph:
     workflow.add_node("audit",               secure_audit_node)           # Phase 7
     workflow.add_node("commercialize",       commercial_blueprint_node)   # Phase 8
     workflow.add_node("fabricate",           fabrication_node)            # Phase 9
+    workflow.add_node("regulate",            regulatory_node)             # Phase 10
     workflow.add_node("compile_pdf",         compile_final_pdf)
 
     workflow.set_entry_point("query_graph")
@@ -313,7 +317,8 @@ def build_orchestrator() -> StateGraph:
             "fabricate":           "fabricate",
         },
     )
-    workflow.add_edge("fabricate",   "compile_pdf")
+    workflow.add_edge("fabricate",   "regulate")
+    workflow.add_edge("regulate",    "compile_pdf")
     workflow.add_edge("compile_pdf", END)
 
     return workflow.compile()
