@@ -1,0 +1,15 @@
+# NEURO-SYMBOLIC CORE
+langgraph==0.0.26
+langchain-core==0.1.30
+pydantic==2.6.3
+
+# ENTERPRISE KNOWLEDGE GRAPH
+neo4j==5.18.0
+
+# FRONTEND DASHBOARD
+streamlit==1.32.0
+pandas==2.2.1
+
+# DETERMINISTIC SOLVERS & FACTUALITY
+sympy==1.12
+sentence-transformers==2.5.1
