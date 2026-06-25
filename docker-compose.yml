@@ -49,6 +49,18 @@ services:
     networks:
       - internal_mesh
 
+  # Isolated LaTeX compilation engine (Tectonic via TexLive)
+  pdf_compiler:
+    image: texlive/texlive:latest
+    container_name: constitutional_pdf_engine
+    volumes:
+      - ./output:/workspace
+    working_dir: /workspace
+    # Keeps container alive to accept tectonic exec commands
+    command: tail -f /dev/null
+    networks:
+      - internal_mesh
+
 networks:
   internal_mesh:
     driver: bridge

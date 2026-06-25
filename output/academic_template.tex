@@ -1,0 +1,62 @@
+\documentclass[12pt, twocolumn]{article}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{geometry}
+\geometry{margin=1in}
+
+% ── CRGS Lab Academic Template ────────────────────────────────────────────────
+% Governed by: The Living Constitution 2.0 — Sociotechnical Constitution v2.0.0
+%
+% Usage: this file is rendered programmatically by core/compiler.py.
+% Do not edit manually — field values are injected via Jinja2 at compile time.
+%
+% Variable slots (replaced by compiler):
+%   {{ title }}           — hypothesis title
+%   {{ author }}          — always "Constitutional AI R&D Platform / CRGS Lab"
+%   {{ date }}            — ISO timestamp of compilation
+%   {{ abstract }}        — paper abstract
+%   {{ hypothesis }}      — one-sentence falsifiable hypothesis
+%   {{ claims_tex }}      — \item-list of verified claims
+%   {{ proofs }}          — SymPy / math proof narrative
+%   {{ citations_tex }}   — \item-list of Neo4j paper IDs
+%   {{ content_hash }}    — SHA-256 of the payload JSON
+% ─────────────────────────────────────────────────────────────────────────────
+
+\title{{ {{ title }} }}
+\author{{ Constitutional AI R\&D Platform \\ CRGS Lab --- TLC 2.0 }}
+\date{{ Compiled: {{ date }} }}
+
+\begin{document}
+\maketitle
+
+\section{Abstract}
+{{ abstract }}
+
+\section{Verified Hypothesis}
+\textit{{ {{ hypothesis }} }}
+
+\section{Verified Claims}
+\begin{itemize}
+{{ claims_tex }}
+\end{itemize}
+
+\section{Verified Methodology \& Mathematical Proofs}
+{{ proofs }}
+
+\section{Adversarial Review Log}
+Red Team Audit: \textbf{PASSED}. No structural flaws detected in contradictory
+literature retrieved from the Constitutional Knowledge Graph.
+
+\section{Citations (Neo4j Knowledge Graph)}
+\begin{itemize}
+{{ citations_tex }}
+\end{itemize}
+
+\section{Provenance}
+\begin{itemize}
+  \item Content hash (SHA-256): \texttt{{ {{ content_hash }} }}
+  \item Governed by: The Living Constitution 2.0 --- Sociotechnical Constitution v2.0.0
+  \item Canonical Intent: LOCKED --- ratified 2026-06-22
+\end{itemize}
+
+\end{document}

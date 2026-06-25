@@ -1,0 +1,7 @@
+# PATENT & IP SEARCH BINDING
+google-search-results==2.4.2
+crossrefapi==1.5.0
+
+# DETERMINISTIC COMPILATION
+pylatex==1.4.1
+jinja2==3.1.3
