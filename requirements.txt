@@ -11,5 +11,5 @@ streamlit==1.32.0
 pandas==2.2.1
 
 # DETERMINISTIC SOLVERS & FACTUALITY
-sympy==1.12
+sympy>=1.13.3
 sentence-transformers==2.5.1
