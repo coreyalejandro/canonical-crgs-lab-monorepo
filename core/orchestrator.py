@@ -16,17 +16,19 @@ from langgraph.graph import END, StateGraph
 
 from core.ledger import MerkleLedger
 from core.nodes import verifier_node, visionary_node
+from core.state import ResearchState
 
 ledger = MerkleLedger()
 
 
-def human_cryptographic_checkpoint(state: dict) -> dict:
+
+def human_cryptographic_checkpoint(state: ResearchState) -> dict:
     """
     Article 8: This node is always interrupted before execution.
     It must receive a valid human_signature_hash to proceed.
     On resume, records the signature event in the ledger.
     """
-    if not state.get("human_signature_hash"):
+    if not state.human_signature_hash:
         raise RuntimeError(
             "Missing Human PI signature (Article 8). Execution frozen."
         )
@@ -34,14 +36,14 @@ def human_cryptographic_checkpoint(state: dict) -> dict:
         "RUNTIME_CONSENT",
         "Human_PI_01",
         {
-            "hypothesis":    state.get("visionary_hypothesis", ""),
-            "verification":  state.get("verifier_validation", ""),
+            "hypothesis":    state.visionary_hypothesis or "",
+            "verification":  state.verifier_validation or "",
         },
     )
     return {}
 
 
-workflow = StateGraph(dict)
+workflow = StateGraph(ResearchState)
 workflow.add_node("visionary",         visionary_node)
 workflow.add_node("verifier",          verifier_node)
 workflow.add_node("human_checkpoint",  human_cryptographic_checkpoint)
