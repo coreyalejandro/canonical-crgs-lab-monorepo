@@ -1,11 +1,12 @@
 .PHONY: all clean build init verify verify-sandbox verify-etl run \
         execute-phase-1 execute-phase-2 execute-phase-3 \
-        compile-dossier compile-dossier-run
+        compile-dossier compile-dossier-run \
+        execute-ingestion
 
 # Strict abort on any command failure
 .SHELLFLAGS = -ec
 
-all: execute-phase-3
+all: execute-ingestion
 
 # ── SHARED ────────────────────────────────────────────────────────────────────
 
@@ -91,3 +92,10 @@ compile-dossier-run:
 		"from core.compiler import compile_tier1_dossier; \
 		compile_tier1_dossier('output/payload.json', 'Tier1_Dossier')"
 	@echo "Tier-1 PDF written to ./output/"
+
+# ── PHASE 4 ───────────────────────────────────────────────────────────────────
+
+execute-ingestion: verify-etl
+	@echo "Initializing Autonomous ETL Data Extraction..."
+	docker-compose run --rm constitutional_engine python core/ingest_arxiv.py
+	@echo "Neo4j Knowledge Graph is now loaded with live, structurally mapped facts."
