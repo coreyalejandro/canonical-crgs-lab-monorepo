@@ -1,0 +1,87 @@
+---
+# k8s/math-sandbox.yaml — Math Sandbox Deployment (Network-Isolated)
+#
+# The sandbox runs with no egress — the network policy below enforces
+# it cannot make outbound calls. Only the constitutional engine can reach it.
+# ─────────────────────────────────────────────────────────────────────────────
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: math-sandbox
+  namespace: crgs-lab
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: math-sandbox
+  template:
+    metadata:
+      labels:
+        app: math-sandbox
+    spec:
+      # Run as non-root — mirrors sandbox/Dockerfile.sandbox unprivileged user
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+      containers:
+      - name: sandbox
+        image: YOUR_AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/constitutional_engine:latest
+        command: ["uvicorn", "sandbox.sandbox_api:app", "--host", "0.0.0.0", "--port", "8000"]
+        env:
+        - name: PYTHONUNBUFFERED
+          value: "1"
+        ports:
+        - containerPort: 8000
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 10
+          periodSeconds: 5
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+
+---
+# Sandbox ClusterIP — only reachable from within the cluster
+apiVersion: v1
+kind: Service
+metadata:
+  name: math-sandbox-service
+  namespace: crgs-lab
+spec:
+  type: ClusterIP
+  selector:
+    app: math-sandbox
+  ports:
+  - port: 8000
+    targetPort: 8000
+
+---
+# NetworkPolicy — sandbox has NO egress (constitutional isolation)
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: sandbox-isolation
+  namespace: crgs-lab
+spec:
+  podSelector:
+    matchLabels:
+      app: math-sandbox
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          app: agent-engine
+    ports:
+    - protocol: TCP
+      port: 8000
+  # Egress intentionally omitted — default deny blocks all outbound

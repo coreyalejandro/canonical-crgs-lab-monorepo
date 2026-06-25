@@ -1,0 +1,97 @@
+name: Enterprise Production Rollout
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  AWS_REGION: us-east-1
+  ECR_REPOSITORY: constitutional_engine
+
+jobs:
+  deploy:
+    name: Deterministic Build & Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build and Push Immutable Image
+        id: build-push
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build \
+            --build-arg BUILDKIT_INLINE_CACHE=1 \
+            -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG \
+            -t $ECR_REGISTRY/$ECR_REPOSITORY:latest \
+            .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
+          echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
+
+      - name: Update KubeConfig
+        run: |
+          aws eks update-kubeconfig \
+            --region $AWS_REGION \
+            --name constitutional-ai-cluster
+
+      - name: Apply Kubernetes Secrets
+        env:
+          OPENAI_API_KEY_B64: ${{ secrets.OPENAI_API_KEY_B64 }}
+        run: |
+          # Inject real secret value from GitHub Secrets
+          sed "s|REPLACE_WITH_BASE64_ENCODED_OPENAI_KEY|${OPENAI_API_KEY_B64}|g" \
+            k8s/secrets.yaml | kubectl apply -f -
+
+      - name: Apply Production Manifests
+        run: |
+          # Substitute ECR image URL into manifests
+          sed -i "s|YOUR_AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com|${{ steps.login-ecr.outputs.registry }}|g" \
+            k8s/production-stack.yaml k8s/math-sandbox.yaml
+          kubectl apply -f k8s/production-stack.yaml
+          kubectl apply -f k8s/math-sandbox.yaml
+
+      - name: Rolling Image Update
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          kubectl set image deployment/constitutional-engine \
+            engine=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG \
+            -n crgs-lab
+          kubectl set image deployment/math-sandbox \
+            sandbox=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG \
+            -n crgs-lab
+
+      - name: Wait for Rollout
+        run: |
+          kubectl rollout status deployment/constitutional-engine -n crgs-lab --timeout=300s
+          kubectl rollout status deployment/math-sandbox -n crgs-lab --timeout=120s
+
+      - name: Fetch Live Dashboard URL
+        run: |
+          echo "Waiting for load balancer hostname..."
+          for i in $(seq 1 12); do
+            LB=$(kubectl get svc enterprise-dashboard-lb -n crgs-lab \
+              -o jsonpath='{.status.loadBalancer.ingress[0].hostname}' 2>/dev/null)
+            if [ -n "$LB" ]; then
+              echo "LIVE DASHBOARD: http://$LB"
+              break
+            fi
+            sleep 10
+          done

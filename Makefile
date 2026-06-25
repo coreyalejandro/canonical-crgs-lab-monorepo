@@ -1,7 +1,8 @@
 .PHONY: all clean build init verify verify-sandbox verify-etl run \
         execute-phase-1 execute-phase-2 execute-phase-3 \
         compile-dossier compile-dossier-run \
-        execute-ingestion execute-autonomous-run
+        execute-ingestion execute-autonomous-run \
+        deploy-cloud-infrastructure deploy-kubernetes
 
 # Strict abort on any command failure
 .SHELLFLAGS = -ec
@@ -106,3 +107,26 @@ execute-autonomous-run: verify-etl
 	@echo "Initiating Full-System Master Orchestrator..."
 	docker-compose run --rm constitutional_engine python core/master_orchestrator.py
 	@echo "Tier-1 PDF successfully generated in the /output directory."
+
+# ── PHASE 6 ───────────────────────────────────────────────────────────────────
+
+deploy-cloud-infrastructure:
+	@echo "Provisioning Deterministic AWS Infrastructure via Terraform..."
+	cd terraform && terraform init && terraform apply -auto-approve
+	@echo "Cloud VPC, Security Groups, and EKS Cluster live."
+	@echo "Run: terraform output  to see cluster endpoint and ECR URL."
+
+deploy-kubernetes: deploy-cloud-infrastructure
+	@echo "Applying Production Kubernetes Manifests..."
+	aws eks update-kubeconfig --region us-east-1 --name constitutional-ai-cluster
+	kubectl apply -f k8s/secrets.yaml
+	kubectl apply -f k8s/production-stack.yaml
+	kubectl apply -f k8s/math-sandbox.yaml
+	kubectl rollout status deployment/constitutional-engine -n crgs-lab --timeout=300s
+	@echo "Microservices scheduled and rolling out."
+	@echo "Fetching load balancer URL..."
+	@kubectl get svc enterprise-dashboard-lb -n crgs-lab \
+		-o jsonpath='{.status.loadBalancer.ingress[0].hostname}' 2>/dev/null \
+		|| echo "Load balancer provisioning — retry in 60s."
+	@echo ""
+	@echo "PHASE 6 CONTRACT EXECUTED. SYSTEM IS LIVE IN PRODUCTION CLOUD."
