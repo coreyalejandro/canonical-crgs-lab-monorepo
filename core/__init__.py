@@ -1,7 +1,7 @@
 """
 core/__init__.py — Constitutional Engine Core Package
 
-Exposes the primary entry points for Phases 2–8:
+Exposes the primary entry points for Phases 2–9:
   - get_deterministic_generator  (llm_binding)
   - HypothesisPayload            (llm_binding)
   - ingest_pdfs                  (ingest_pdfs)
@@ -20,6 +20,8 @@ Exposes the primary entry points for Phases 2–8:
   - CommercialOrchestrator       (commercializer)       Phase 8
   - PriorArtConflictError        (commercializer)       Phase 8
   - commercial_blueprint_node    (commercializer)       Phase 8
+  - CyberPhysicalEngine          (fabrication_engine)   Phase 9
+  - fabrication_node             (fabrication_engine)   Phase 9
 """
 
 from core.llm_binding import get_deterministic_generator, HypothesisPayload
@@ -39,6 +41,7 @@ from core.commercializer import (
     PriorArtConflictError,
     commercial_blueprint_node,
 )
+from core.fabrication_engine import CyberPhysicalEngine, fabrication_node
 
 __all__ = [
     "get_deterministic_generator",
@@ -59,4 +62,6 @@ __all__ = [
     "CommercialOrchestrator",
     "PriorArtConflictError",
     "commercial_blueprint_node",
+    "CyberPhysicalEngine",
+    "fabrication_node",
 ]

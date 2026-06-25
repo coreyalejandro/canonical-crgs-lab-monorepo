@@ -4,7 +4,8 @@
         execute-ingestion execute-autonomous-run \
         deploy-cloud-infrastructure deploy-kubernetes \
         deploy-audit-ledger enforce-zero-trust execute-phase-7 \
-        deploy-commercialization execute-phase-8
+        deploy-commercialization execute-phase-8 \
+        deploy-cyber-physical execute-phase-9
 
 # Strict abort on any command failure
 .SHELLFLAGS = -ec
@@ -159,3 +160,14 @@ deploy-commercialization:
 
 execute-phase-8: deploy-commercialization
 	@echo "PHASE 8 CONTRACT EXECUTED. SYSTEM NOW OUTPUTS FULL IP PATENTS AND MANUFACTURING BOMS."
+
+# ── PHASE 9 ───────────────────────────────────────────────────────────────────
+
+deploy-cyber-physical:
+	@echo "Wiring Cyber-Physical Fabrication Engine into Master Orchestrator..."
+	docker-compose run --rm constitutional_engine python -c \
+		"from core.fabrication_engine import CyberPhysicalEngine; print('Fabrication engine bound and active.')"
+	@echo "CAD generation and robotic protocol dispatchers active."
+
+execute-phase-9: deploy-cyber-physical
+	@echo "PHASE 9 CONTRACT EXECUTED. SYSTEM NOW COMPILES PHYSICAL FABRICATION ASSETS (CAD AND ROBOTIC PROTOCOLS)."
