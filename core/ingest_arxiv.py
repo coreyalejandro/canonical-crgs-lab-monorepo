@@ -266,7 +266,7 @@ def run_ingestion(
     db = Neo4jIngestionEngine(uri=neo4j_uri, user=neo4j_user, password=neo4j_password)
 
     # Bind the extractor to the ExtractedPaper schema
-    extractor = get_deterministic_generator().with_structured_output(ExtractedPaper)
+    extractor = get_raw_llm().with_structured_output(ExtractedPaper)
 
     ingested = 0
     for paper in papers:

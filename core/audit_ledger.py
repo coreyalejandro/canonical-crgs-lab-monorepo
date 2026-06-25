@@ -40,7 +40,7 @@ from botocore.exceptions import BotoCoreError, ClientError
 
 # ── Constants ─────────────────────────────────────────────────────────────────
 
-LEDGER_DIR  = os.getenv("AUDIT_LEDGER_DIR", "/var/log")
+LEDGER_DIR  = os.getenv("AUDIT_LEDGER_DIR", "./output/audit")
 QLDB_LEDGER = os.getenv("AWS_QLDB_LEDGER_NAME", "")  # Empty = file-only mode
 
 

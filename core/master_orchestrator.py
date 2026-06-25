@@ -278,11 +278,11 @@ def route_commercial_result(state: ProductionResearchState) -> str:
     """
     Conditional edge after commercialize (Phase 8):
       prior_art_conflict → regenerate hypothesis
-      passed             → compile PDF
+      passed             → fabricate (Phase 9 → regulate → compile_pdf)
     """
     if state.get("validation_status") == "prior_art_conflict":
         return "generate_hypothesis"
-    return "compile_pdf"
+    return "fabricate"
 
 
 # ── Graph Assembly ────────────────────────────────────────────────────────────

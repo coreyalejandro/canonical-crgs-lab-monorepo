@@ -32,7 +32,7 @@ from typing import Any
 
 from langchain_core.prompts import PromptTemplate
 
-from core.llm_binding import get_deterministic_generator
+from core.llm_binding import get_raw_llm
 
 
 # ── Custom exceptions ─────────────────────────────────────────────────────────
@@ -83,7 +83,7 @@ class CommercialOrchestrator:
     """
 
     def __init__(self) -> None:
-        self.legal_llm  = get_deterministic_generator()
+        self.legal_llm  = get_raw_llm()
         self._serpapi_key = os.getenv("SERPAPI_KEY", "")
 
     # ── Prior art search ──────────────────────────────────────────────────────

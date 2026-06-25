@@ -41,7 +41,7 @@ from typing import Any
 
 from langchain_core.prompts import PromptTemplate
 
-from core.llm_binding import get_deterministic_generator
+from core.llm_binding import get_raw_llm
 
 
 # ── Constants ─────────────────────────────────────────────────────────────────
@@ -78,7 +78,7 @@ class RegulatoryEngine:
 
     def __init__(self, output_dir: str = DEFAULT_OUTPUT_DIR) -> None:
         self.output_dir    = Path(output_dir)
-        self.compliance_llm = get_deterministic_generator()
+        self.compliance_llm = get_raw_llm()
         self.output_dir.mkdir(parents=True, exist_ok=True)
 
     # ── Pathway determination ─────────────────────────────────────────────────

@@ -25,7 +25,7 @@ from typing import Any
 
 from langchain_core.prompts import PromptTemplate
 
-from core.llm_binding import get_deterministic_generator, HypothesisPayload
+from core.llm_binding import get_deterministic_generator, get_raw_llm, HypothesisPayload
 
 
 # ── Custom exception ──────────────────────────────────────────────────────────
@@ -79,9 +79,9 @@ class RedTeamEvaluator:
 
     def __init__(self, neo4j_session: Any) -> None:
         self.db = neo4j_session
-        # Adversarial LLM is the same deterministic generator — temperature=0.0.
-        # The prompt forces the adversarial role; the temperature prevents drift.
-        self.adversarial_llm = get_deterministic_generator()
+        # Adversarial LLM — raw client so it works with LangChain pipe chains.
+        # Temperature=0.0 prevents drift; the prompt forces the adversarial role.
+        self.adversarial_llm = get_raw_llm()
 
     # ── Private helpers ───────────────────────────────────────────────────────
 
@@ -90,7 +90,7 @@ class RedTeamEvaluator:
         Retrieve all [:CONTRADICTS] relationships from Neo4j whose claim text
         contains the given keyword.  Returns an empty list if the graph has no
         contradictory evidence — this is a valid (strong) result for the payload.
-        Also returns an empty list when db is None (offline / local run mode).
+        Also returns an empty list when db is None or Neo4j is unreachable.
         """
         if self.db is None:
             return []
@@ -99,8 +99,11 @@ class RedTeamEvaluator:
             "WHERE toLower(c.text) CONTAINS toLower($keyword) "
             "RETURN p.id AS paper_id, p.title AS paper_title, c.text AS claim_text"
         )
-        result = self.db.run(query, keyword=keyword)
-        return result.data()
+        try:
+            result = self.db.run(query, keyword=keyword)
+            return result.data()
+        except Exception:
+            return []
 
     @staticmethod
     def _extract_keyword(payload: HypothesisPayload | dict) -> str:
@@ -167,10 +170,10 @@ class RedTeamEvaluator:
             "contradictions": contradiction_text,
         })
 
-        # Extract text regardless of whether result is a string or Pydantic model
+        # Extract text — AIMessage from local model, str from some older chains
         verdict_text: str = (
             raw_result if isinstance(raw_result, str)
-            else getattr(raw_result, "hypothesis", str(raw_result))
+            else getattr(raw_result, "content", str(raw_result))
         )
 
         # 4. Parse verdict
