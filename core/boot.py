@@ -52,17 +52,22 @@ models to mirror human cognitive equilibrium.
 
 # Pre-computed at authorship time — recompute with:
 #   python3 -c "import hashlib; print(hashlib.sha256(open('core/boot.py').read().split('TLC_TOCA_CANON')[1].split('\"\"\"')[1].encode()).hexdigest())"
-CONSTITUTION_HASH = hashlib.sha256(TLC_TOCA_CANON.encode("utf-8")).hexdigest()
+# Pre-computed at Phase 14 ratification — DO NOT RECOMPUTE AT RUNTIME.
+# Any mutation of TLC_TOCA_CANON above will produce a different runtime hash
+# and enforce_cryptographic_boot() will call sys.exit(1).
+CONSTITUTION_HASH = "30ac14272f29eee0dbb7a7326520376b2d4a1f44be6ab6fb8281cbbf7e313eef"
 
 
 def enforce_cryptographic_boot() -> str:
-    """
-    Hard-crash if the constitution has been mutated.
-    Returns the verified hash on success.
-    """
-    current = hashlib.sha256(TLC_TOCA_CANON.encode("utf-8")).hexdigest()
-    if current != CONSTITUTION_HASH:
-        sys.stderr.write("FATAL: TLC ToCA integrity violated. System halted.\n")
+    """Hard-crash if TLC_TOCA_CANON has been mutated since Phase 14 ratification."""
+    live_hash = hashlib.sha256(TLC_TOCA_CANON.encode("utf-8")).hexdigest()
+    if live_hash != CONSTITUTION_HASH:
+        sys.stderr.write(
+            f"FATAL: TLC ToCA integrity violated.\n"
+            f"  Expected: {CONSTITUTION_HASH}\n"
+            f"  Got:      {live_hash}\n"
+            "System halted.\n"
+        )
         sys.exit(1)
-    print(f"✅ TLC ToCA Cryptographically Verified [{current[:16]}…]. Booting Cognitive Boardroom…")
-    return current
+    print(f"✅ TLC ToCA Cryptographically Verified [{live_hash[:16]}…]. Booting Cognitive Boardroom…")
+    return live_hash
