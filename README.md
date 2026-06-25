@@ -2,7 +2,7 @@
 
 **Governed by:** The Living Constitution 2.0 — Sociotechnical Constitution v2.0.0  
 **Canonical Intent:** `CANONICAL_INTENT.md` — LOCKED  
-**Status:** Phase 1 Active
+**Status:** Phase 13 Complete — Phase 14 Active
 
 ---
 
@@ -54,7 +54,20 @@ All build contracts are numbered and stored in `BUILD-CONTRACT-PLANS/`. They are
 
 | Contract | Phase | Status |
 |---|---|---|
-| `CRGS-LAB-BUILD-CONTRACT-PLANS_PHASE_1.md` | Phase 1 — Infrastructure + Scaffolding | Active |
+| `CRGS-LAB-BUILD-CONTRACT-PLANS_PHASE_1.md` | Phase 1 — Infrastructure + Scaffolding | Complete |
+| `CRGS-LAB-BUILD-CONTRACT-PLANS_PHASE_2.md` | Phase 2 | Complete |
+| `CRGS-LAB-BUILD-CONTRACT-PLANS_PHASE_3.md` | Phase 3 | Complete |
+| `CRGS-LAB-BUILD-CONTRACT-PLANS_PHASE_4.md` | Phase 4 | Complete |
+| `CRGS-LAB-BUILD-CONTRACT-PLANS_PHASE_5.md` | Phase 5 | Complete |
+| `CRGS-LAB-BUILD-CONTRACT-PLANS_PHASE_6.md` | Phase 6 | Complete |
+| `CRGS-LAB-BUILD-CONTRACT-PLANS_PHASE_7.md` | Phase 7 | Complete |
+| `CRGS-LAB-BUILD-CONTRACT-PLANS_PHASE_8.md` | Phase 8 | Complete |
+| `CRGS-LAB-BUILD-CONTRACT-PLANS_PHASE_9.md` | Phase 9 | Complete |
+| `CRGS-LAB-BUILD-CONTRACT-PLANS_PHASE_10.md` | Phase 10 | Complete |
+| `CRGS-LAB-BUILD-CONTRACT-PLANS_PHASE_11.md` | Phase 11 | Complete |
+| `CRGS-LAB-BUILD-CONTRACT-PLANS_PHASE_12.md` | Phase 12 — Master Synthesis | Complete |
+| `CRGS-LAB-BUILD-CONTRACT-PLANS_PHASE_13.md` | Phase 13 — Ironclad Synthesis | Complete |
+| `CRGS-LAB-BUILD-CONTRACT-PLANS_PHASE_14.md` | Phase 14 — Audit Remediation | Active |
 
 ---
 
