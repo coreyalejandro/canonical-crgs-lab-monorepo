@@ -68,6 +68,7 @@ This identity statement is canonical and cannot be changed. The project intent s
 | Version | Date | Change | Ratified By |
 |---|---|---|---|
 | 1.0 | 2026-06-22 | Initial ratification. Added "blockchain-runtime-verified" to prior draft. | Corey Alejandro |
+| 1.2 | 2026-10-22 | Clarification: the evidence layer in use is a signed, hash-chained, single-operator log, deliberately not a blockchain (TLC 2.0 README); "blockchain-runtime-verified" names the roadmap endpoint for multi-organization deployments, not the current system. | Corey Alejandro |
 | 1.1 | 2026-06-25 | Phase 14 audit remediation: submodule hygiene, tautological hash fix, StateGraph type-safety, merge-conflict resolution, Dillinger artifact removal, VERIFICATION_AND_TRUTH.md propagation, BLOCKCHAIN_ROADMAP.md creation, MODULE_STATUS.md regeneration. | Corey Alejandro |
 
 ---

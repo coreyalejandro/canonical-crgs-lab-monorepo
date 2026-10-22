@@ -2,7 +2,8 @@
 
 **Governed by:** The Living Constitution 2.0 — Sociotechnical Constitution v2.0.0  
 **Canonical Intent:** `CANONICAL_INTENT.md` — LOCKED  
-**Status:** Phase 13 Complete — Phase 14 Active
+**Status:** Phase 14 snapshot (June 2026). Current results and their reproduction live in [The Living Constitution 2.0](https://github.com/coreyalejandro/the-living-constitution-2.0).  
+**Clarification (2026-10-22):** the current evidence layer is a signed, hash-chained, single-operator log and is deliberately *not* a blockchain (see the TLC 2.0 README); a blockchain ledger remains a roadmap item for multi-organization use. See `CANONICAL_INTENT.md` v1.2.
 
 ---
 
