@@ -1,9 +1,12 @@
 name: Enterprise Production Rollout
 
+# Manual only. This workflow deploys to a private AWS account (ECR + EKS).
+# It no longer runs on every push, so a missing cloud permission cannot mark
+# ordinary research commits as failed. To deploy, the AWS user in the
+# repository secrets needs ECR and EKS access; then start this workflow by
+# hand from the Actions tab.
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
 
 env:
   AWS_REGION: us-east-1

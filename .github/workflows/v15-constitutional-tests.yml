@@ -23,7 +23,7 @@ jobs:
       - name: Install dependencies
         run: |
           pip install --upgrade pip
-          pip install pydantic langgraph langchain-openai pytest
+          pip install pydantic langgraph langchain-openai chainlit pytest
 
       - name: Run v15 constitutional invariant tests
         run: pytest tests/test_v15_invariants.py -v
